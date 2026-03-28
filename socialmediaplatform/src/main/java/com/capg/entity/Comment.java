@@ -1,68 +1,71 @@
 package com.capg.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="comments")
 public class Comment {
 
-	@Id
-	@Column(name = "commentID")
-	private Integer commentID;
+    @Id
+    @Column(name = "commentID")
+    private Integer commentID;
 
-	@Column(name = "comment_text")
-	private String commentText;
+    @Column(name = "comment_text")
+    private String commentText;
 
-	@Column(name = "timestamp")
-	private LocalDateTime timestamp;
+    @Column(name = "timestamp")
+    private LocalDateTime timestamp;
 
-	@ManyToOne
-	@JoinColumn(name = "userID")
-	private User user;
+    @ManyToOne
+    @JoinColumn(name = "userID")
+    private User user;
 
-	@ManyToOne
-	@JoinColumn(name = "postID")
-	private Post post;
+    @ManyToOne
+    @JoinColumn(name = "postID")
+    @JsonBackReference   // 🔥 VERY IMPORTANT
+    private Post post;
 
-	public Integer getCommentID() {
-		return commentID;
-	}
+    // 🔥 GETTERS & SETTERS
 
-	public void setCommentID(Integer commentID) {
-		this.commentID = commentID;
-	}
+    public Integer getCommentID() {
+        return commentID;
+    }
 
-	public String getCommentText() {
-		return commentText;
-	}
+    public void setCommentID(Integer commentID) {
+        this.commentID = commentID;
+    }
 
-	public void setCommentText(String commentText) {
-		this.commentText = commentText;
-	}
+    public String getCommentText() {
+        return commentText;
+    }
 
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
+    public void setCommentText(String commentText) {
+        this.commentText = commentText;
+    }
 
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
-	}
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public Post getPost() {
-		return post;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setPost(Post post) {
-		this.post = post;
-	}
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
 }

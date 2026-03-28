@@ -1,58 +1,60 @@
 package com.capg.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "likes")
 public class Likes {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer likeID;
+    @Id
+    @Column(name = "likeID")
+    private Integer likeID;
 
-	private LocalDateTime timestamp;
+    @Column(name = "timestamp")
+    private LocalDateTime timestamp;
 
-	@ManyToOne
-	@JoinColumn(name = "userID")
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userID")
+    private User user;
 
-	@ManyToOne
-	@JoinColumn(name = "postID")
-	private Post post;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postID")
+    @JsonBackReference   // 🔥 IMPORTANT
+    private Post post;
 
-	public Integer getLikeID() {
-		return likeID;
-	}
+    // 🔥 GETTERS & SETTERS
 
-	public void setLikeID(Integer likeID) {
-		this.likeID = likeID;
-	}
+    public Integer getLikeID() {
+        return likeID;
+    }
 
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
+    public void setLikeID(Integer likeID) {
+        this.likeID = likeID;
+    }
 
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
-	}
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public Post getPost() {
-		return post;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setPost(Post post) {
-		this.post = post;
-	}
+    public Post getPost() {
+        return post;
+    }
 
-
+    public void setPost(Post post) {
+        this.post = post;
+    }
 }
