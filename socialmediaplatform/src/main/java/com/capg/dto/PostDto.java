@@ -14,7 +14,7 @@ public class PostDto {
     private int likeCount;
     private int commentCount;
 
-    // 🔹 Constructors
+    //Constructors
     public PostDto() {
     }
 

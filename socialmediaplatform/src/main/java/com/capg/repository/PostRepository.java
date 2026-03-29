@@ -14,7 +14,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     // Date range
     List<Post> findByTimestampBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    // Keyword search (derived not possible → keep simple JPQL)
+    // Keyword search 
     List<Post> findByContentContainingIgnoreCase(String keyword);
 
 }
