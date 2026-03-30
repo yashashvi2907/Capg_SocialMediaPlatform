@@ -28,7 +28,7 @@ public class NotificationDTO {
     public String getUsername() { return username; }
     public String getEmail() { return email; }
 //    public byte[] getProfilePicture() { return profilePicture; }
-public String getProfileBase64() {
+public String getProfilePicture() {
     if (profilePicture == null || profilePicture.length == 0) {
         return null;
     }
