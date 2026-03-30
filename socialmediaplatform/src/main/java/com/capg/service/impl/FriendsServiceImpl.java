@@ -66,7 +66,7 @@ public class FriendsServiceImpl implements FriendsService {
     @Override
     public List<FriendsDTO> getAcceptedFriends(Integer userId) {
 
-    	User user = userRepo.findById(userId).orElse(null);
+        User user = userRepo.findById(userId).orElse(null);
 
         return repo.findByUser1OrUser2(user, user)
                 .stream()

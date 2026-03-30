@@ -51,6 +51,4 @@ public class Friends {
 	public void setUser2(User user2) {
 		this.user2 = user2;
 	}
-
-
 }
