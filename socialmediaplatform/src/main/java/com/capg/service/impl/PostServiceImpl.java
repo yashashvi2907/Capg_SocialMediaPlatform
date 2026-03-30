@@ -1,7 +1,10 @@
 package com.capg.service.impl;
 
 import com.capg.dto.PostDto;
+import com.capg.entity.Friends;
 import com.capg.entity.Post;
+import com.capg.entity.User;
+import com.capg.repository.FriendsRepository;
 import com.capg.repository.PostRepository;
 import com.capg.service.PostService;
 
@@ -9,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,7 +20,11 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private PostRepository postRepository;
-    //Common DTO mapper
+
+    @Autowired
+    private FriendsRepository friendsRepository;
+
+    // DTO mapper
     private PostDto mapToDTO(Post post) {
         PostDto dto = new PostDto();
         dto.setPostID(post.getPostID());
@@ -70,10 +77,35 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostDto> getFeed(Integer userId) {
 
+        // Step 1: Create dummy user object (only ID needed)
+        User user = new User();
+        user.setUserID(userId);
+
+        // Step 2: Get friends where user is user1
+        List<Friends> friends1 = friendsRepository.findByUser1UserIDAndStatus(userId, "ACCEPTED");
+
+        // Step 3: Get friends where user is user2
+        List<Friends> friends2 = friendsRepository.findByUser2UserIDAndStatus(userId, "ACCEPTED");
+
+        // Step 4: Collect all friend IDs
+        Set<Integer> friendIds = new HashSet<>();
+
+        for (Friends f : friends1) {
+            friendIds.add(f.getUser2().getUserID());
+        }
+
+        for (Friends f : friends2) {
+            friendIds.add(f.getUser1().getUserID());
+        }
+
+        // Step 5: Add self posts also (optional but recommended)
+        friendIds.add(userId);
+
+        // Step 6: Fetch all posts and filter
         List<Post> posts = postRepository.findAll();
 
         return posts.stream()
-                .filter(p -> p.getUser().getUserID().equals(userId))
+                .filter(p -> friendIds.contains(p.getUser().getUserID()))
                 .sorted((a, b) -> b.getTimestamp().compareTo(a.getTimestamp()))
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());

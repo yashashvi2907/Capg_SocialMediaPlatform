@@ -21,10 +21,10 @@ public class Likes {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postID")
-    @JsonBackReference   // 🔥 IMPORTANT
+    @JsonBackReference   //IMPORTANT
     private Post post;
 
-    // 🔥 GETTERS & SETTERS
+    // GETTERS & SETTERS
 
     public Integer getLikeID() {
         return likeID;

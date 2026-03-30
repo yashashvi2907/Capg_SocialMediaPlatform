@@ -25,7 +25,6 @@ public class User {
     private byte[] profilePicture;
 
     // Relationships (only keep if tables exist)
-
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
