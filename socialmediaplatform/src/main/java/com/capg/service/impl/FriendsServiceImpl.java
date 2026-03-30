@@ -4,7 +4,6 @@ import com.capg.dto.FriendsDTO;
 import com.capg.entity.Friends;
 import com.capg.entity.User;
 import com.capg.repository.IFriendsRepo;
-//import com.capg.repository.IUserRepo;
 import com.capg.repository.UserRepository;
 import com.capg.service.FriendsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +65,7 @@ public class FriendsServiceImpl implements FriendsService {
     @Override
     public List<FriendsDTO> getAcceptedFriends(Integer userId) {
 
-    	User user = userRepo.findById(userId).orElse(null);
+        User user = userRepo.findById(userId).orElse(null);
 
         return repo.findByUser1OrUser2(user, user)
                 .stream()
@@ -75,7 +74,7 @@ public class FriendsServiceImpl implements FriendsService {
                 .collect(Collectors.toList());
     }
 
-    // 🔁 CONVERT ENTITY → DTO
+    // CONVERT ENTITY → DTO
     private FriendsDTO convertToDTO(Friends f) {
         return new FriendsDTO(
                 f.getFriendshipID(),
