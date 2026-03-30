@@ -4,7 +4,8 @@ import com.capg.dto.PostDto;
 import com.capg.entity.Friends;
 import com.capg.entity.Post;
 import com.capg.entity.User;
-import com.capg.repository.FriendsRepository;
+
+import com.capg.repository.IFriendsRepo;
 import com.capg.repository.PostRepository;
 import com.capg.service.PostService;
 
@@ -18,27 +19,28 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 
-    @Autowired
-    private PostRepository postRepository;
+	@Autowired
+	private PostRepository postRepository;
 
-    @Autowired
-    private FriendsRepository friendsRepository;
+	// Use the new IFriendsRepo instead of old FriendsRepository
+	@Autowired
+	private IFriendsRepo friendsRepo;
 
-    // DTO mapper
-    private PostDto mapToDTO(Post post) {
-        PostDto dto = new PostDto();
-        dto.setPostID(post.getPostID());
-        dto.setContent(post.getContent());
-        dto.setTimestamp(post.getTimestamp());
+	// DTO mapper (no change needed here)
+	private PostDto mapToDTO(Post post) {
+	    PostDto dto = new PostDto();
+	    dto.setPostID(post.getPostID());
+	    dto.setContent(post.getContent());
+	    dto.setTimestamp(post.getTimestamp());
 
-        dto.setUserID(post.getUser().getUserID());
-        dto.setUsername(post.getUser().getUsername());
+	    dto.setUserID(post.getUser().getUserID());
+	    dto.setUsername(post.getUser().getUsername());
 
-        dto.setLikeCount(post.getLikes().size());
-        dto.setCommentCount(post.getComments().size());
+	    dto.setLikeCount(post.getLikes().size());
+	    dto.setCommentCount(post.getComments().size());
 
-        return dto;
-    }
+	    return dto;
+	}
 
     @Override
     public List<PostDto> getPostsByUser(Integer userId) {
@@ -74,34 +76,28 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
+    // inject the repo
+
     @Override
     public List<PostDto> getFeed(Integer userId) {
 
-        // Step 1: Create dummy user object (only ID needed)
         User user = new User();
         user.setUserID(userId);
 
-        // Step 2: Get friends where user is user1
-        List<Friends> friends1 = friendsRepository.findByUser1UserIDAndStatus(userId, "ACCEPTED");
+        // Use the instance, not the interface name
+        List<Friends> friends = friendsRepo.findByUser1OrUser2(user, user);
 
-        // Step 3: Get friends where user is user2
-        List<Friends> friends2 = friendsRepository.findByUser2UserIDAndStatus(userId, "ACCEPTED");
-
-        // Step 4: Collect all friend IDs
         Set<Integer> friendIds = new HashSet<>();
-
-        for (Friends f : friends1) {
-            friendIds.add(f.getUser2().getUserID());
+        for (Friends f : friends) {
+            if (f.getUser1().getUserID().equals(userId)) {
+                friendIds.add(f.getUser2().getUserID());
+            } else {
+                friendIds.add(f.getUser1().getUserID());
+            }
         }
 
-        for (Friends f : friends2) {
-            friendIds.add(f.getUser1().getUserID());
-        }
-
-        // Step 5: Add self posts also (optional but recommended)
         friendIds.add(userId);
 
-        // Step 6: Fetch all posts and filter
         List<Post> posts = postRepository.findAll();
 
         return posts.stream()
