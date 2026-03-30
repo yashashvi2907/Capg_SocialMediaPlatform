@@ -1,3 +1,4 @@
+
 package com.capg.repository;
 
 import com.capg.entity.Friends;
