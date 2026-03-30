@@ -1,0 +1,54 @@
+package com.capg.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.capg.dto.GroupDTO;
+import com.capg.entity.Group;
+import com.capg.entity.User;
+import com.capg.repository.GroupRepository;
+import com.capg.service.GroupService;
+
+@Service
+public class GroupServiceImpl implements GroupService {
+
+    @Autowired
+    private GroupRepository groupRepository;
+
+    @Override
+    public List<GroupDTO> getAllGroups() {
+
+        return groupRepository.findAll().stream().map(group -> {
+
+            User admin = group.getAdmin();
+
+            return new GroupDTO(
+                    group.getGroupID(),
+                    group.getGroupName(),
+                    admin != null ? admin.getUserID() : null,
+                    admin != null ? admin.getUsername() : null,
+                    admin != null ? admin.getEmail() : null
+            );
+
+        }).toList();
+    }
+
+    @Override
+    public GroupDTO getGroupById(Integer id) {
+
+        Group group = groupRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Group not found with id: " + id));
+
+        User admin = group.getAdmin();
+
+        return new GroupDTO(
+                group.getGroupID(),
+                group.getGroupName(),
+                admin != null ? admin.getUserID() : null,
+                admin != null ? admin.getUsername() : null,
+                admin != null ? admin.getEmail() : null
+        );
+    }
+}
