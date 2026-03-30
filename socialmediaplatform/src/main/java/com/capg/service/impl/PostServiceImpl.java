@@ -26,7 +26,7 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private IFriendsRepo friendsRepo;
 
-	// DTO mapper (no change needed here)
+	// DTO mapper 
 	private PostDto mapToDTO(Post post) {
 	    PostDto dto = new PostDto();
 	    dto.setPostID(post.getPostID());
