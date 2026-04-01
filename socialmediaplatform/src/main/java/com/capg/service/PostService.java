@@ -1,9 +1,7 @@
 package com.capg.service;
 
 import java.time.LocalDateTime;
-
 import java.util.List;
-
 import com.capg.dto.PostDto;
 
 public interface PostService {
