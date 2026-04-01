@@ -2,6 +2,8 @@ package com.capg.service.impl;
 
 import com.capg.dto.CommentDto;
 import com.capg.entity.Comment;
+import com.capg.Exception.BadRequestException;
+import com.capg.Exception.CommentNotFoundException;
 import com.capg.repository.CommentRepository;
 import com.capg.service.CommentService;
 
@@ -34,8 +36,20 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDto> getCommentsByPost(Integer postId) {
-        return commentRepository.findByPostPostID(postId)
-                .stream()
+
+        //Validation
+        if (postId == null) {
+            throw new BadRequestException("Post ID cannot be null");
+        }
+
+        List<Comment> comments = commentRepository.findByPostPostID(postId);
+
+        //Not Found
+        if (comments.isEmpty()) {
+            throw new CommentNotFoundException("No comments found for post: " + postId);
+        }
+
+        return comments.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
