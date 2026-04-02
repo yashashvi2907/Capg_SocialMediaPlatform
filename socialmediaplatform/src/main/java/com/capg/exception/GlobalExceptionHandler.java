@@ -23,6 +23,16 @@ public class GlobalExceptionHandler {
                 "Message API Error"
         );
     }
+    // Handle User Not Found Exception
+    @ExceptionHandler(UserNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDTO handleUserNotFound(UserNotFound ex) {
+        return new ErrorDTO(
+                ex.getMessage(),
+                LocalDate.now(),
+                "User API Error"
+        );
+    }
     
  // Friend Not Found
     @ExceptionHandler(FriendNotFoundException.class)
