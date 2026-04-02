@@ -1,8 +1,8 @@
-//package com.capg.Exception;
-//
-//public class UserNotFound extends RuntimeException {
-//
-//    public UserNotFound(String message) {
-//        super(message);
-//    }
-//}
+package com.capg.exception;
+
+public class UserNotFound extends RuntimeException {
+
+    public UserNotFound(String message) {
+        super(message);
+    }
+}

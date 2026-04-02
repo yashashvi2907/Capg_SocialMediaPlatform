@@ -51,4 +51,5 @@ public class GroupServiceImpl implements GroupService {
                 admin != null ? admin.getEmail() : null
         );
     }
+
 }

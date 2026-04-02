@@ -74,6 +74,22 @@ public class FriendsServiceImpl implements FriendsService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+    
+    @Override
+    public List<FriendsDTO> getAllPending() {
+        return repo.findByStatus("pending")
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FriendsDTO> getAllAccepted() {
+        return repo.findByStatus("accepted")
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
     // CONVERT ENTITY → DTO
     private FriendsDTO convertToDTO(Friends f) {

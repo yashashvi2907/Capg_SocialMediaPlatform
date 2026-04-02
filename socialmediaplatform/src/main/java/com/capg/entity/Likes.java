@@ -5,24 +5,30 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "likes")
+@Table(name = "Likes")
 public class Likes {
 
-    @Id
-    @Column(name = "likeID")
-    private Integer likeID;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "likeID")
+	private Integer likeID;
 
-    @Column(name = "timestamp")
-    private LocalDateTime timestamp;
+	@Column(name = "timestamp")
+	private LocalDateTime timestamp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userID")
-    private User user;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "userID")
+	private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postID")
-    @JsonBackReference   //IMPORTANT
-    private Post post;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "postID")
+	private Post post;
+
+	// ===== GETTERS & SETTERS =====
+
+	public Integer getLikeID() {
+		return likeID;
+	}
 
     // GETTERS & SETTERS
 
@@ -46,15 +52,7 @@ public class Likes {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
+	public void setPost(Post post) {
+		this.post = post;
+	}
 }
