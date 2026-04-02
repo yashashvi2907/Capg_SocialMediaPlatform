@@ -49,4 +49,7 @@ public class Likes {
 		return post;
 	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
