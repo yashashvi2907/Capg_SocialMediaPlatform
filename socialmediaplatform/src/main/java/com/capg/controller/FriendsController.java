@@ -2,7 +2,7 @@ package com.capg.controller;
 
 import com.capg.dto.FriendsDTO;
 import com.capg.entity.Friends;
-import com.capg.exception.UnauthorizedException;
+import com.capg.Exception.UnauthorizedException;
 import com.capg.security.JwtUtil;
 import com.capg.service.FriendsService;
 import org.springframework.beans.factory.annotation.Autowired;
