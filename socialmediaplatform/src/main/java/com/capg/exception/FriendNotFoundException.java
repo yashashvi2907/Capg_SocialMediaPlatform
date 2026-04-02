@@ -1,11 +1,11 @@
-//package com.capg.exception;
-//
-//public class FriendNotFoundException extends RuntimeException {
-//
-//    public FriendNotFoundException(String message) {
-//        super(message);
-//        
-//    }
-//}
+package com.capg.exception;
+
+public class FriendNotFoundException extends RuntimeException {
+
+    public FriendNotFoundException(String message) {
+        super(message);
+        
+    }
+}
 
 
