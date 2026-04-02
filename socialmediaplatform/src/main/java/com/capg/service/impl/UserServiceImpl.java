@@ -1,8 +1,8 @@
 package com.capg.service.impl;
 
-//import com.capg.dto.PostDto;
 import com.capg.dto.PostDto;
 import com.capg.entity.Post;
+import com.capg.exception.UserNotFound;
 import com.capg.repository.PostRepository;
 import com.capg.service.UserService;
 
