@@ -26,4 +26,27 @@ public class GroupController {
     public GroupDTO getGroupById(@PathVariable Integer id) {
         return groupService.getGroupById(id);
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
