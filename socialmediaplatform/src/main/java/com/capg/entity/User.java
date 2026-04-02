@@ -20,39 +20,40 @@ public class User {
 	@Column(name = "username")
 	private String username;
 
-	@Column(name = "email")
-	private String email;
+    @Column(name = "username")
+    private String username;
 
-	@Column(name = "password")
-	private String password;
+    @Column(name = "email")
+    private String email;
 
-	@Lob
-	@Column(name = "profile_picture")
-	private byte[] profilePicture;
+    @Column(name = "password")
+    private String password;
 
-	@OneToMany(mappedBy = "user")
-	private List<Post> posts;
+    @Lob
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
 
-	@OneToMany(mappedBy = "user")
-	private List<Comment> comments;
+    // Relationships (only keep if tables exist)
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
-	@OneToMany(mappedBy = "user")
-	private List<Likes> likes;
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
 
-	@OneToMany(mappedBy = "user")
-	private List<Notification> notifications;
+    @OneToMany(mappedBy = "user")
+    private List<Likes> likes;
 
-	@OneToMany(mappedBy = "sender")
-	private List<Message> sentMessages;
+    @OneToMany(mappedBy = "user")
+    private List<Notification> notifications;
 
-	@OneToMany(mappedBy = "receiver")
-	private List<Message> receivedMessages;
+    @OneToMany(mappedBy = "sender")
+    private List<Message> sentMessages;
 
-	@OneToMany(mappedBy = "user1")
-	private List<Friends> friends1;
+    @OneToMany(mappedBy = "receiver")
+    private List<Message> receivedMessages;
 
-	@OneToMany(mappedBy = "user2")
-	private List<Friends> friends2;
+    @OneToMany(mappedBy = "user1")
+    private List<Friends> friends1;
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private UserAccount userAccount;
