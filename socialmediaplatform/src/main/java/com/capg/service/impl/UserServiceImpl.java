@@ -1,9 +1,11 @@
 package com.capg.service.impl;
 
 //import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 import com.capg.entity.Post;
 import com.capg.entity.User;
 //import com.capg.repository.PostRepository;
+import com.capg.repository.PostRepository;
 import com.capg.repository.UserRepository;
 import com.capg.service.UserService;
 
@@ -16,25 +18,31 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private PostRepository postRepository;
 
-//    @Autowired
-//    private PostRepository postRepository;
+    @Override
+    public List<PostDTO> getUserPosts(Integer userId) {
 
-//    @Override
-//    public List<PostDto> getUserPosts(Integer userId) {
-//
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        List<Post> posts = postRepository.findByUser(user);
+        List<Post> posts = postRepository.findByUserUserID(userId);
 
-//        return posts.stream().map(post -> {
-//            PostDto dto = new PostDto();
-//            dto.setPostID(post.getPostID());
-//            dto.setContent(post.getContent());
-//            dto.setTimestamp(post.getTimestamp());
-//            return dto;
-//        }).toList();
-//    }
+        if (posts.isEmpty()) {
+            throw new RuntimeException("No posts found for user with id: " + userId);
+        }
+
+        return posts.stream().map(post -> {
+            PostDTO dto = new PostDTO();
+
+            dto.setPostID(post.getPostID());
+            dto.setContent(post.getContent());
+            dto.setTimestamp(post.getTimestamp());
+
+            dto.setUserID(post.getUser().getUserID());
+            dto.setUsername(post.getUser().getUsername());
+
+            dto.setLikeCount(post.getLikes().size());
+            dto.setCommentCount(post.getComments().size());
+
+            return dto;
+        }).toList();
+    }
 }
