@@ -3,7 +3,7 @@ package com.capg.service.impl;
 import com.capg.dto.MessageDTO;
 import com.capg.entity.Message;
 import com.capg.repository.MessageRepository;
-import com.capg.Exception.ResourceNotFoundException;
+import com.capg.exception.ResourceNotFoundException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
