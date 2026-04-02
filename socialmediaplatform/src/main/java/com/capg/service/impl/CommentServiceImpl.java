@@ -2,8 +2,8 @@ package com.capg.service.impl;
 
 import com.capg.dto.CommentDto;
 import com.capg.entity.Comment;
-import com.capg.Exception.BadRequestException;
-import com.capg.Exception.CommentNotFoundException;
+import com.capg.exception.BadRequestException;
+import com.capg.exception.CommentNotFoundException;
 import com.capg.repository.CommentRepository;
 import com.capg.service.CommentService;
 

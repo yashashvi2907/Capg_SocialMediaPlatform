@@ -22,14 +22,9 @@ public class Likes {
 	@JoinColumn(name = "postID")
 	private Post post;
 
-	// ===== GETTERS & SETTERS =====
-
 	public Integer getLikeID() {
 		return likeID;
-	}
-
-    // GETTERS & SETTERS
-
+	}	
     public void setLikeID(Integer likeID) {
         this.likeID = likeID;
     }
