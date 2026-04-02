@@ -1,48 +1,8 @@
-//package com.capg.service.impl;
-//
-//import com.capg.dto.LikesDTO;
-//import com.capg.entity.Likes;
-//import com.capg.repository.LikesRepository;
-//import com.capg.service.LikesService;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-//@Service
-//public class LikesServiceImpl implements LikesService {
-//
-//    @Autowired
-//    private LikesRepository likeRepository;
-//
-//    private LikesDTO mapToDTO(Likes like) {
-//        LikesDTO dto = new LikesDTO();
-//
-//        dto.setLikeID(like.getLikeID());
-//        dto.setTimestamp(like.getTimestamp());
-//
-//        dto.setUserID(like.getUser().getUserID());
-//        dto.setUsername(like.getUser().getUsername());
-//
-//        dto.setPostID(like.getPost().getPostID());
-//
-//        return dto;
-//    }
-//
-//    @Override
-//    public List<LikesDTO> getLikesByPost(Integer postId) {
-//        return likeRepository.findByPostPostID(postId)
-//                .stream()
-//                .map(this::mapToDTO)
-//                .collect(Collectors.toList());
-//    }
-//}
 package com.capg.service.impl;
 
 import com.capg.dto.LikesDTO;
 import com.capg.entity.Likes;
+import com.capg.exception.LikesNotFoundException;
 import com.capg.repository.LikesRepository;
 import com.capg.service.LikesService;
 
@@ -62,6 +22,12 @@ public class LikesServiceImpl implements LikesService {
 
         List<Likes> likes = likeRepository.findByPostPostID(postId);
 
+        // 🔴 Throw exception if no likes found
+        if (likes.isEmpty()) {
+            throw new LikesNotFoundException("No likes found for post id: " + postId);
+        }
+
+        // ✅ Convert Entity → DTO
         return likes.stream().map(like -> {
             LikesDTO dto = new LikesDTO();
 
