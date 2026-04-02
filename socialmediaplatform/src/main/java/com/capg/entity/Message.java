@@ -7,11 +7,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="messages")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"sender", "receiver"})
 public class Message {
 
 	@Id
@@ -28,5 +25,20 @@ public class Message {
 	@ManyToOne
 	@JoinColumn(name = "receiverID")
 	private User receiver;
+
+	public Integer getMessageID() { return messageID; }
+	public void setMessageID(Integer messageID) { this.messageID = messageID; }
+
+	public String getMessageText() { return messageText; }
+	public void setMessageText(String messageText) { this.messageText = messageText; }
+
+	public LocalDateTime getTimestamp() { return timestamp; }
+	public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
+
+	public User getSender() { return sender; }
+	public void setSender(User sender) { this.sender = sender; }
+
+	public User getReceiver() { return receiver; }
+	public void setReceiver(User receiver) { this.receiver = receiver; }
 
 }
