@@ -10,6 +10,7 @@ import java.util.List;
 public class Post {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "postID")
 	private Integer postID;
 
@@ -76,4 +77,5 @@ public class Post {
 	public void setLikes(List<Likes> likes) {
 		this.likes = likes;
 	}
+
 }
