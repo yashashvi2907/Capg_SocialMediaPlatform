@@ -26,7 +26,7 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private IFriendsRepo friendsRepo;
 
-    // ✅ DTO Mapper
+    //DTO Mapper
     private PostDto mapToDTO(Post post) {
         PostDto dto = new PostDto();
 
@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
         return dto;
     }
 
-    //Posts by User
+    //Fetch posts by a User
     @Override
     public List<PostDto> getPostsByUser(Integer userId) {
 
@@ -60,7 +60,7 @@ public class PostServiceImpl implements PostService {
         return posts.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
-    //Posts by Date Range
+    //Fetch Posts by Date Range
     @Override
     public List<PostDto> getPostsByDateRange(LocalDateTime start, LocalDateTime end) {
 
@@ -77,7 +77,7 @@ public class PostServiceImpl implements PostService {
         return posts.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
-    // Search by Keyword
+    //Search posts by Keyword
     @Override
     public List<PostDto> searchPosts(String keyword) {
 
@@ -94,7 +94,7 @@ public class PostServiceImpl implements PostService {
         return posts.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
-    //Trending (Simple - Latest Posts)
+    //Fetch Trending Posts
     @Override
     public List<PostDto> getTrendingPosts() {
 
@@ -111,7 +111,7 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
-    //Feed (Friends + Self)
+    //Fetch feed of a user
     @Override
     public List<PostDto> getFeed(Integer userId) {
 

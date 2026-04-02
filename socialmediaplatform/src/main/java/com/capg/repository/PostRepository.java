@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    // Proper naming 
+    //Find Post of a user
     List<Post> findByUserUserID(Integer userID);
 
-    // Date range
+    //Find Post by date range
     List<Post> findByTimestampBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    // Keyword search 
+    //Find Post by Keyword
     List<Post> findByContentContainingIgnoreCase(String keyword);
 
 }
