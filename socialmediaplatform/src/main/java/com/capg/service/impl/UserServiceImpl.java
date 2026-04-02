@@ -1,12 +1,9 @@
 package com.capg.service.impl;
 
 //import com.capg.dto.PostDto;
-import com.capg.dto.PostDTO;
+import com.capg.dto.PostDto;
 import com.capg.entity.Post;
-import com.capg.entity.User;
-//import com.capg.repository.PostRepository;
 import com.capg.repository.PostRepository;
-import com.capg.repository.UserRepository;
 import com.capg.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,7 @@ public class UserServiceImpl implements UserService {
     private PostRepository postRepository;
 
     @Override
-    public List<PostDTO> getUserPosts(Integer userId) {
+    public List<PostDto> getUserPosts(Integer userId) {
 
         List<Post> posts = postRepository.findByUserUserID(userId);
 
@@ -30,7 +27,7 @@ public class UserServiceImpl implements UserService {
         }
 
         return posts.stream().map(post -> {
-            PostDTO dto = new PostDTO();
+            PostDto dto = new PostDto();
 
             dto.setPostID(post.getPostID());
             dto.setContent(post.getContent());

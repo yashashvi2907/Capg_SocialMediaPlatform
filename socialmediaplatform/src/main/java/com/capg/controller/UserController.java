@@ -1,6 +1,6 @@
 package com.capg.controller;
 
-import com.capg.dto.PostDTO;
+import com.capg.dto.PostDto;
 import com.capg.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}/posts")
-    public List<PostDTO> getUserPoscts(@PathVariable Integer userId) {
+    public List<PostDto> getUserPosts(@PathVariable Integer userId) {
         return userService.getUserPosts(userId);
     }
 }
