@@ -38,7 +38,7 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostsByDateRange(start, end));
     }
 
-    //Search Posts by Keyword
+    //Search Posts by specific Keyword
     @GetMapping("/search")
     public ResponseEntity<List<PostDto>> searchPosts(@RequestParam String keyword) {
         return ResponseEntity.ok(postService.searchPosts(keyword));
