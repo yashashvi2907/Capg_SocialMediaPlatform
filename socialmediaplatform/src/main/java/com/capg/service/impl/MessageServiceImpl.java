@@ -4,6 +4,8 @@ import com.capg.dto.MessageDTO;
 import com.capg.entity.Message;
 import com.capg.repository.MessageRepository;
 import com.capg.service.MessageService;
+import com.capg.exception.ResourceNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,10 @@ public class MessageServiceImpl implements MessageService {
     public List<MessageDTO> getChatsBetweenUser(Integer user1Id, Integer user2Id) {
 
         List<Message> messages = messageRepository.getChatsBetweenUser(user1Id, user2Id);
+
+        if (messages.isEmpty()) {
+            throw new ResourceNotFoundException("No messages found between users");
+        }
 
         return messages.stream().map(msg -> {
             MessageDTO dto = new MessageDTO();
