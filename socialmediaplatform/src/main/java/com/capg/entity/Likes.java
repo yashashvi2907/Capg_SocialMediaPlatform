@@ -12,7 +12,6 @@ public class Likes {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "likeID")
 	private Integer likeID;
-
 	@Column(name = "timestamp")
 	private LocalDateTime timestamp;
 
@@ -31,10 +30,6 @@ public class Likes {
 	}
 
     // GETTERS & SETTERS
-
-    public Integer getLikeID() {
-        return likeID;
-    }
 
     public void setLikeID(Integer likeID) {
         this.likeID = likeID;
@@ -55,4 +50,9 @@ public class Likes {
 	public void setPost(Post post) {
 		this.post = post;
 	}
+
+	public Post getPost() {
+		return post;
+	}
+
 }
