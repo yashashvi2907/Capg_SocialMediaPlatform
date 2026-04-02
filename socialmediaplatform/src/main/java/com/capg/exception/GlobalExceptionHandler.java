@@ -1,8 +1,6 @@
 package com.capg.exception;
 
 import com.capg.dto.ErrorDTO;
-import com.capg.exception.FriendNotFoundException;
-import com.capg.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
