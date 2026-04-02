@@ -9,7 +9,7 @@ public class Group {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer groupID;
-
+      @Column(name="groupName")
 	private String groupName;
 
 	@ManyToOne

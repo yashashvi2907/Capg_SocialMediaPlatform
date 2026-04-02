@@ -24,3 +24,33 @@ public class GroupDTO {
     public String getAdminUsername() { return adminUsername; }
     public String getAdminEmail() { return adminEmail; }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
