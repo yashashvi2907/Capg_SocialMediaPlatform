@@ -1,8 +1,8 @@
 package com.capg.service.impl;
 
-//import com.capg.dto.PostDto;
 import com.capg.dto.PostDto;
 import com.capg.entity.Post;
+import com.capg.exception.UserNotFound;
 import com.capg.repository.PostRepository;
 import com.capg.service.UserService;
 
@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
         List<Post> posts = postRepository.findByUserUserID(userId);
 
         if (posts.isEmpty()) {
-            throw new RuntimeException("No posts found for user with id: " + userId);
+            throw new UserNotFound("No posts found for user with id: " + userId);
         }
 
         return posts.stream().map(post -> {
