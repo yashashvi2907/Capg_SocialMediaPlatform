@@ -44,6 +44,7 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+    
     @ExceptionHandler(PostNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlePostException(PostNotFoundException ex) {
         ErrorResponse error = new ErrorResponse(
@@ -51,6 +52,17 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage()
         );
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(NoDataFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNoData(NoDataFoundException ex) {
+
+        Map<String, Object> error = new HashMap<>();
+        error.put("timestamp", LocalDateTime.now());
+        error.put("message", ex.getMessage());
+        error.put("status", HttpStatus.NOT_FOUND.value());
+
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
