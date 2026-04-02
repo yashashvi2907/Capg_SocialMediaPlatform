@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Likes {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "likeID")
 	private Integer likeID;
 	@Column(name = "timestamp")
