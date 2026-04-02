@@ -1,56 +1,45 @@
 package com.capg.service.impl;
 
-import com.capg.dto.UserDto;
-import com.capg.entity.User;
-import com.capg.repository.UserRepository;
+//import com.capg.dto.PostDto;
+import com.capg.dto.PostDto;
+import com.capg.entity.Post;
+import com.capg.repository.PostRepository;
 import com.capg.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private PostRepository postRepository;
 
     @Override
-    public UserDto getUserById(Integer userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        return convertToDto(user);
-    }
+    public List<PostDto> getUserPosts(Integer userId) {
 
-    @Override
-    public List<UserDto> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map(this::convertToDto).collect(Collectors.toList());
-    }
+        List<Post> posts = postRepository.findByUserUserID(userId);
 
-    @Override
-    public UserDto getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElse(null);
-        return convertToDto(user);
-    }
-
-    @Override
-    public UserDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElse(null);
-        return convertToDto(user);
-    }
-
-    private UserDto convertToDto(User user) {
-        if (user == null) {
-            return null;
+        if (posts.isEmpty()) {
+            throw new RuntimeException("No posts found for user with id: " + userId);
         }
 
-        UserDto dto = new UserDto();
-        dto.setUserID(user.getUserID());
-        dto.setUsername(user.getUsername());
-        dto.setEmail(user.getEmail());
-        dto.setProfilePicture(user.getProfilePicture());
+        return posts.stream().map(post -> {
+            PostDto dto = new PostDto();
 
-        return dto;
+            dto.setPostID(post.getPostID());
+            dto.setContent(post.getContent());
+            dto.setTimestamp(post.getTimestamp());
+
+            dto.setUserID(post.getUser().getUserID());
+            dto.setUsername(post.getUser().getUsername());
+
+            dto.setLikeCount(post.getLikes().size());
+            dto.setCommentCount(post.getComments().size());
+
+            return dto;
+        }).toList();
     }
 }
