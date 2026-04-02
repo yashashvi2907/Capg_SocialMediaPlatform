@@ -45,6 +45,54 @@ public class GlobalExceptionHandler {
                 "Message API Error"
         );
     }
+
+    // Handle Post Not Found Exception
+    @ExceptionHandler(PostNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDTO handlePostNotFound(PostNotFoundException ex) {
+
+        return new ErrorDTO(
+                ex.getMessage(),
+                LocalDate.now(),
+                "Post API Error"
+        );
+    }
+
+    // Handle Notification Not Found Exception
+    @ExceptionHandler(NotificationNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDTO handleNotificationNotFound(NotificationNotFoundException ex) {
+
+        return new ErrorDTO(
+                ex.getMessage(),
+                LocalDate.now(),
+                "Notification API Error"
+        );
+    }
+
+    // Handle Invalid User ID Exception
+    @ExceptionHandler(InvalidUserIdException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleInvalidUserId(InvalidUserIdException ex) {
+
+        return new ErrorDTO(
+                ex.getMessage(),
+                LocalDate.now(),
+                "User API Error"
+        );
+    }
+
+    // Handle Bad Request Exception
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleBadRequest(BadRequestException ex) {
+
+        return new ErrorDTO(
+                ex.getMessage(),
+                LocalDate.now(),
+                "Bad Request"
+        );
+    }
 }
 
 

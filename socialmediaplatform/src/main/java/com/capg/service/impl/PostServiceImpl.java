@@ -81,17 +81,19 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostDto> searchPosts(String keyword) {
 
+        //Validation
         if (keyword == null || keyword.trim().isEmpty()) {
             throw new BadRequestException("Keyword cannot be empty");
         }
 
-        List<Post> posts = postRepository.findByContentContainingIgnoreCase(keyword);
+        //Direct DTO fetch (no entity loading)
+        List<PostDto> posts = postRepository.searchPostsByKeyword(keyword);
 
         if (posts.isEmpty()) {
             throw new PostNotFoundException("No posts found with keyword: " + keyword);
         }
 
-        return posts.stream().map(this::mapToDTO).collect(Collectors.toList());
+        return posts;
     }
 
     //Fetch Trending Posts

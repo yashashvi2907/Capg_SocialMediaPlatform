@@ -1,7 +1,7 @@
 package com.capg.service.impl;
 
-import com.capg.Exception.InvalidUserIdException;
-import com.capg.Exception.NotificationNotFoundException;
+import com.capg.exception.InvalidUserIdException;
+import com.capg.exception.NotificationNotFoundException;
 import com.capg.dto.NotificationDTO;
 import com.capg.repository.NotificationRepository;
 import org.junit.jupiter.api.Test;
@@ -18,16 +18,26 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ *
+ */
 @ExtendWith(MockitoExtension.class)
 class NotificationServiceImplTest {
-
+    /**
+     * Mocked repository for handling Notification entity persistence operations.
+     * Used to simulate database interactions in unit tests.
+     */
     @Mock
     private NotificationRepository notificationRepository;
 
+    /**
+     * Service implementation under test.
+     * Injects the mocked dependencies to validate NotificationService behavior.
+     */
     @InjectMocks
     private NotificationServiceImpl notificationService;
 
-    //Positive Test Case
+    //Test for getting valid user notifications
     @Test
     void testGetUserNotifications() {
 
@@ -56,7 +66,7 @@ class NotificationServiceImplTest {
                 .getUserNotifications(userId);
     }
 
-    //Negative Test Case
+    //Test for no notifications found
     @Test
     void testNoNotificationsFound() {
 
@@ -74,5 +84,20 @@ class NotificationServiceImplTest {
 
         verify(notificationRepository, times(1))
                 .getUserNotifications(userId);
+    }
+
+    //Test notifications for Invalid user id
+    @Test
+    void testInvalidUserId() {
+
+        InvalidUserIdException exception = assertThrows(
+                InvalidUserIdException.class,
+                () -> notificationService.getUserNotifications(0)
+        );
+
+        assertEquals("Invalid userId", exception.getMessage());
+
+        verify(notificationRepository, never())
+                .getUserNotifications(anyInt());
     }
 }

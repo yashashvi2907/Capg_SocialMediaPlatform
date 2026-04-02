@@ -1,7 +1,7 @@
 package com.capg.service.impl;
 
-import com.capg.Exception.InvalidUserIdException;
-import com.capg.Exception.NotificationNotFoundException;
+import com.capg.exception.InvalidUserIdException;
+import com.capg.exception.NotificationNotFoundException;
 import com.capg.dto.NotificationDTO;
 import com.capg.repository.NotificationRepository;
 import com.capg.service.NotificationService;

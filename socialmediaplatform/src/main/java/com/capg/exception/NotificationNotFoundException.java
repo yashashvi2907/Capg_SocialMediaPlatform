@@ -1,4 +1,4 @@
-package com.capg.Exception;
+package com.capg.exception;
 
 public class NotificationNotFoundException extends RuntimeException{
     public NotificationNotFoundException(String message){
