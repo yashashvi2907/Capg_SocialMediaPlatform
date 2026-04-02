@@ -1,79 +1,83 @@
 package com.capg.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name="posts")
+@Table(name = "posts")
 public class Post {
 
-	@Id
-	@Column(name = "postID")
-	private Integer postID;
+    @Id
+    @Column(name = "postID")
+    private Integer postID;
 
-	@Column(name = "content")
-	private String content;
+    @Column(name = "content")
+    private String content;
 
-	@Column(name = "timestamp")
-	private LocalDateTime timestamp;
+    @Column(name = "timestamp")
+    private LocalDateTime timestamp;
 
-	@ManyToOne
-	@JoinColumn(name = "userID")
-	private User user;
+    @ManyToOne
+    @JoinColumn(name = "userID")
+    private User user;
 
-	@OneToMany(mappedBy = "post")
-	private List<Comment> comments;
+    @OneToMany(mappedBy = "post")
+    @JsonManagedReference
+    private List<Comment> comments;
 
-	@OneToMany(mappedBy = "post")
-	private List<Likes> likes;
+    @OneToMany(mappedBy = "post")
+    @JsonManagedReference
+    private List<Likes> likes;
 
-	public Integer getPostID() {
-		return postID;
-	}
+    //GETTERS & SETTERS
 
-	public void setPostID(Integer postID) {
-		this.postID = postID;
-	}
+    public Integer getPostID() {
+        return postID;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public void setPostID(Integer postID) {
+        this.postID = postID;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
-	}
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public List<Comment> getComments() {
-		return comments;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
+    public List<Comment> getComments() {
+        return comments;
+    }
 
-	public List<Likes> getLikes() {
-		return likes;
-	}
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
-	public void setLikes(List<Likes> likes) {
-		this.likes = likes;
-	}
+    public List<Likes> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Likes> likes) {
+        this.likes = likes;
+    }
 }
