@@ -1,3 +1,4 @@
+
 package com.capg.service.impl;
 
 import com.capg.dto.FriendsDTO;
@@ -70,6 +71,22 @@ public class FriendsServiceImpl implements FriendsService {
         return repo.findByUser1OrUser2(user, user)
                 .stream()
                 .filter(f -> f.getStatus().equalsIgnoreCase("accepted"))
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    public List<FriendsDTO> getAllPending() {
+        return repo.findByStatus("pending")
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FriendsDTO> getAllAccepted() {
+        return repo.findByStatus("accepted")
+                .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

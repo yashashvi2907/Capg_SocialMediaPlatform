@@ -2,6 +2,7 @@ package com.capg.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "Likes")
@@ -29,29 +30,27 @@ public class Likes {
 		return likeID;
 	}
 
-	public void setLikeID(Integer likeID) {
-		this.likeID = likeID;
-	}
+    // GETTERS & SETTERS
 
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
+    public Integer getLikeID() {
+        return likeID;
+    }
 
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
-	}
+    public void setLikeID(Integer likeID) {
+        this.likeID = likeID;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public Post getPost() {
-		return post;
-	}
+    public User getUser() {
+        return user;
+    }
 
 	public void setPost(Post post) {
 		this.post = post;
