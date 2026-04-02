@@ -4,6 +4,8 @@ package com.capg.service.impl;
 import com.capg.dto.FriendsDTO;
 import com.capg.entity.Friends;
 import com.capg.entity.User;
+import com.capg.exception.FriendNotFoundException;
+import com.capg.exception.NoDataFoundException;
 import com.capg.repository.IFriendsRepo;
 import com.capg.repository.UserRepository;
 import com.capg.service.FriendsService;
@@ -38,7 +40,17 @@ public class FriendsServiceImpl implements FriendsService {
 
     @Override
     public List<FriendsDTO> getAllFriends() {
-        return repo.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+
+        List<FriendsDTO> list = repo.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No friends available");
+        }
+
+        return list;
     }
 
     @Override
@@ -55,40 +67,70 @@ public class FriendsServiceImpl implements FriendsService {
     @Override
     public List<FriendsDTO> getPendingRequests(Integer userId) {
 
-        User user = userRepo.findById(userId).orElse(null);
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new FriendNotFoundException("User not found with ID: " + userId));
 
-        return repo.findByUser2AndStatus(user, "pending")
+        List<FriendsDTO> list = repo.findByUser2AndStatus(user, "pending")
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
-    }
 
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No pending requests found");
+        }
+
+        return list;
+    }
+    
+    
     @Override
     public List<FriendsDTO> getAcceptedFriends(Integer userId) {
 
-        User user = userRepo.findById(userId).orElse(null);
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new FriendNotFoundException("User not found with ID: " + userId));
 
-        return repo.findByUser1OrUser2(user, user)
+        List<FriendsDTO> list = repo.findByUser1OrUser2(user, user)
                 .stream()
                 .filter(f -> f.getStatus().equalsIgnoreCase("accepted"))
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No accepted friends found");
+        }
+
+        return list;
     }
+    
     
     @Override
     public List<FriendsDTO> getAllPending() {
-        return repo.findByStatus("pending")
+
+        List<FriendsDTO> list = repo.findByStatus("pending")
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No pending requests in system");
+        }
+
+        return list;
     }
 
     @Override
     public List<FriendsDTO> getAllAccepted() {
-        return repo.findByStatus("accepted")
+
+        List<FriendsDTO> list = repo.findByStatus("accepted")
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No accepted friendships in system");
+        }
+
+        return list;
     }
 
     // CONVERT ENTITY → DTO
