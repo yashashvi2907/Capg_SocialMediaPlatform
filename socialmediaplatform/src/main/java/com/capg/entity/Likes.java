@@ -1,26 +1,29 @@
 package com.capg.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "likes")
+@Table(name = "Likes")
 public class Likes {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "likeID")
 	private Integer likeID;
 
+	@Column(name = "timestamp")
 	private LocalDateTime timestamp;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userID")
 	private User user;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "postID")
 	private Post post;
+
+	// ===== GETTERS & SETTERS =====
 
 	public Integer getLikeID() {
 		return likeID;
@@ -53,6 +56,4 @@ public class Likes {
 	public void setPost(Post post) {
 		this.post = post;
 	}
-
-
 }

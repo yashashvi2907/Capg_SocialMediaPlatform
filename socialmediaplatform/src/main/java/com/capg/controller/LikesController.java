@@ -26,6 +26,6 @@ public class LikesController {
         if (likes.isEmpty()) {
             return ResponseEntity.noContent().build(); // 204 No Content if no likes
         }
-        return ResponseEntity.ok(likes); // 200 OK with list of likes
+        return ResponseEntity.ok(likes);// 200 OK with list of likes
     }
 }
