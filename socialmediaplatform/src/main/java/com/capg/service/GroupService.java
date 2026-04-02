@@ -8,4 +8,28 @@ public interface GroupService {
     List<GroupDTO> getAllGroups();
 
     GroupDTO getGroupById(Integer id);
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//GroupDTO createGroup(GroupDTO dto);
+//GroupDTO updateGroup(Integer id, GroupDTO dto);
