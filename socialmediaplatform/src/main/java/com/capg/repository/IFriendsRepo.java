@@ -14,4 +14,6 @@ public interface IFriendsRepo extends JpaRepository<Friends, Integer> {
 
     // All friends (both sides)
     List<Friends> findByUser1OrUser2(User user1, User user2);
+
+    List<Friends> findByStatus(String status);
 }
