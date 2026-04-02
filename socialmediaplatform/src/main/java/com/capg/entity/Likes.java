@@ -1,58 +1,58 @@
 package com.capg.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "likes")
+@Table(name = "Likes")
 public class Likes {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "likeID")
 	private Integer likeID;
 
+	@Column(name = "timestamp")
 	private LocalDateTime timestamp;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userID")
 	private User user;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "postID")
 	private Post post;
+
+	// ===== GETTERS & SETTERS =====
 
 	public Integer getLikeID() {
 		return likeID;
 	}
 
-	public void setLikeID(Integer likeID) {
-		this.likeID = likeID;
-	}
+    // GETTERS & SETTERS
 
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
+    public Integer getLikeID() {
+        return likeID;
+    }
 
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
-	}
+    public void setLikeID(Integer likeID) {
+        this.likeID = likeID;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public Post getPost() {
-		return post;
-	}
+    public User getUser() {
+        return user;
+    }
 
 	public void setPost(Post post) {
 		this.post = post;
 	}
-
-
 }

@@ -1,4 +1,4 @@
-//package com.capg.Exception;
+//package com.capg.exception;
 //
 //public class FriendNotFoundException extends RuntimeException {
 //
