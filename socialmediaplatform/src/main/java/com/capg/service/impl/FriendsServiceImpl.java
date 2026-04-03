@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -203,6 +204,61 @@ public class FriendsServiceImpl implements FriendsService {
 
         return list;
     }
+    
+    /**
+     * Implementation of mutual friends logic.
+     * @param user1Id ID of first user
+     * @param user2Id ID of second user
+     * @return List of mutual friends as DTO
+     *
+     * @throws RuntimeException if any user is not found
+     */
+    
+    @Override
+    public List<FriendsDTO> getMutualFriends(Integer user1Id, Integer user2Id) {
+
+        //  Fetch users
+        User user1 = userRepo.findById(user1Id)
+                .orElseThrow(() -> new RuntimeException("User1 not found"));
+
+        User user2 = userRepo.findById(user2Id)
+                .orElseThrow(() -> new RuntimeException("User2 not found"));
+
+        // Get accepted friends of user1
+        List<Friends> list1 = repo.findByUser1OrUser2(user1, user1)
+                .stream()
+                .filter(f -> f.getStatus().equalsIgnoreCase("accepted"))
+                .toList();
+
+        // Get accepted friends of user2
+        List<Friends> list2 = repo.findByUser1OrUser2(user2, user2)
+                .stream()
+                .filter(f -> f.getStatus().equalsIgnoreCase("accepted"))
+                .toList();
+
+        // Extract friend IDs of user1
+        Set<Integer> set1 = list1.stream()
+                .map(f -> f.getUser1().getUserID().equals(user1Id)
+                        ? f.getUser2().getUserID()
+                        : f.getUser1().getUserID())
+                .collect(Collectors.toSet());
+
+        // 🔥 Extract friend IDs of user2
+        Set<Integer> set2 = list2.stream()
+                .map(f -> f.getUser1().getUserID().equals(user2Id)
+                        ? f.getUser2().getUserID()
+                        : f.getUser1().getUserID())
+                .collect(Collectors.toSet());
+
+        //  Find common friends
+        set1.retainAll(set2);
+
+        //  Convert to DTO
+        return set1.stream()
+                .map(id -> new FriendsDTO(null, user1Id, id, "mutual"))
+                .collect(Collectors.toList());
+    }
+    
 
     /**
      * Convert Friends Entity to FriendsDTO
@@ -218,4 +274,7 @@ public class FriendsServiceImpl implements FriendsService {
                 f.getStatus()
         );
     }
+    
+   
+    
 }
