@@ -18,28 +18,23 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    /**
-     * Repository for accessing post data.
-     */
-    private PostRepository postRepository;
-    /**
-     * Retrieves all posts created by a specific user.
-     *
-     * @param userId unique identifier of the user
-     * @return list of PostDto representing user posts
-     * @throws UserNotFound if no posts are found for the user
-     */
-    @Override
-    public List<PostDto> getUserPosts(Integer userId) {
+    private final PostRepository postRepository;
 
-        List<Post> posts = postRepository.findByUserUserID(userId);
+    public UserServiceImpl(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
+
+    @Override
+    public List<PostDto> getUserPosts(final Integer userId) {
+
+        final List<Post> posts = postRepository.findByUserUserID(userId);
 
         if (posts.isEmpty()) {
             throw new UserNotFound("No posts found for user with id: " + userId);
         }
 
         return posts.stream().map(post -> {
-            PostDto dto = new PostDto();
+            final PostDto dto = new PostDto();
 
             dto.setPostID(post.getPostID());
             dto.setContent(post.getContent());
