@@ -9,14 +9,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for managing comment-related operations.
+ * Provides APIs to retrieve comments associated with posts.
+ */
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
 
+
+    /**
+     * Constructor-based dependency injection for CommentService.
+     * @param commentService service layer for comment operations
+     */
     @Autowired
     private CommentService commentService;
 
-    // GET comments by postId
+    /**
+     * Retrieves all comments associated with a specific post.
+     * @param postId unique identifier of the post
+     * @return ResponseEntity containing list of CommentDto
+     */
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<CommentDto>> getCommentsByPost(@PathVariable Integer postId) {
         return ResponseEntity.ok(commentService.getCommentsByPost(postId));
