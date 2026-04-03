@@ -11,23 +11,30 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service implementation for handling user-related operations.
+ * Provides business logic for retrieving user posts.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+
+    public UserServiceImpl(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @Override
-    public List<PostDto> getUserPosts(Integer userId) {
+    public List<PostDto> getUserPosts(final Integer userId) {
 
-        List<Post> posts = postRepository.findByUserUserID(userId);
+        final List<Post> posts = postRepository.findByUserUserID(userId);
 
         if (posts.isEmpty()) {
             throw new UserNotFound("No posts found for user with id: " + userId);
         }
 
         return posts.stream().map(post -> {
-            PostDto dto = new PostDto();
+            final PostDto dto = new PostDto();
 
             dto.setPostID(post.getPostID());
             dto.setContent(post.getContent());
