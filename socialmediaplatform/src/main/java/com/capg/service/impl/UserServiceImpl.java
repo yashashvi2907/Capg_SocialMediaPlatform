@@ -11,12 +11,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service implementation for handling user-related operations.
+ * Provides business logic for retrieving user posts.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    /**
+     * Repository for accessing post data.
+     */
     private PostRepository postRepository;
-
+    /**
+     * Retrieves all posts created by a specific user.
+     *
+     * @param userId unique identifier of the user
+     * @return list of PostDto representing user posts
+     * @throws UserNotFound if no posts are found for the user
+     */
     @Override
     public List<PostDto> getUserPosts(Integer userId) {
 
