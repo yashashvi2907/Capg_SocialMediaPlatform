@@ -100,4 +100,12 @@ public class FriendsController {
     public List<FriendsDTO> getAllAccepted() {
         return service.getAllAccepted();
     }
+    
+    @GetMapping("/mutual")
+    public List<FriendsDTO> getMutualFriends(
+            @RequestParam Integer user1,
+            @RequestParam Integer user2) {
+
+        return service.getMutualFriends(user1, user2);
+    }
 }
