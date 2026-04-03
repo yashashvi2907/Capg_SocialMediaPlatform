@@ -1,6 +1,6 @@
 package com.capg.controller;
 
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 import com.capg.service.PostService;
 
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class PostController {
      * @return ResponseEntity containing list of trending PostDto objects
      */
     @GetMapping("/trending")
-    public ResponseEntity<List<PostDto>> getTrendingPosts() {
+    public ResponseEntity<List<PostDTO>> getTrendingPosts() {
         return ResponseEntity.ok(postService.getTrendingPosts());
     }
 
@@ -54,7 +54,7 @@ public class PostController {
      * @return ResponseEntity containing list of PostDto objects for the user
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable Integer userId) {
+    public ResponseEntity<List<PostDTO>> getPostsByUser(@PathVariable Integer userId) {
         return ResponseEntity.ok(postService.getPostsByUser(userId));
     }
 
@@ -69,7 +69,7 @@ public class PostController {
      * @return ResponseEntity containing list of PostDto objects within the date range
      */
     @GetMapping("/date")
-    public ResponseEntity<List<PostDto>> getPostsByDateRange(
+    public ResponseEntity<List<PostDTO>> getPostsByDateRange(
             @RequestParam LocalDateTime start,
             @RequestParam LocalDateTime end) {
 
@@ -86,7 +86,7 @@ public class PostController {
      * @return ResponseEntity containing list of matching PostDto objects
      */
     @GetMapping("/search")
-    public ResponseEntity<List<PostDto>> searchPosts(@RequestParam String keyword) {
+    public ResponseEntity<List<PostDTO>> searchPosts(@RequestParam String keyword) {
         return ResponseEntity.ok(postService.searchPosts(keyword));
     }
 }

@@ -1,6 +1,6 @@
 package com.capg.service.impl;
 
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 import com.capg.exception.BadRequestException;
 import com.capg.exception.PostNotFoundException;
 import com.capg.repository.IFriendsRepo;
@@ -60,7 +60,7 @@ class PostServiceImplTest {
     @Test
     void testSearchPostsValidKeywordReturnsPostList() {
 
-        final PostDto dto = new PostDto(
+        final PostDTO dto = new PostDTO(
                 100,
                 CONTENT,
                 LocalDateTime.now(),
@@ -70,12 +70,12 @@ class PostServiceImplTest {
                 0
         );
 
-        final List<PostDto> mockPosts = List.of(dto);
+        final List<PostDTO> mockPosts = List.of(dto);
 
         when(postRepository.searchPostsByKeyword(VALID_KEYWORD))
                 .thenReturn(mockPosts);
 
-        final List<PostDto> result = postService.searchPosts(VALID_KEYWORD);
+        final List<PostDTO> result = postService.searchPosts(VALID_KEYWORD);
 
         assertNotNull(result,"Result list should not be null");
         assertEquals(1, result.size(),"Result list should contain exactly one element");

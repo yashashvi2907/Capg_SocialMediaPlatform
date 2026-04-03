@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * including post content, metadata, user details, and engagement metrics.
  * </p>
  */
-public class PostDto {
+public class PostDTO {
 
     private Integer postID;
     private String content;
@@ -24,7 +24,7 @@ public class PostDto {
     /**
      * Default constructor.
      */
-    public PostDto() {
+    public PostDTO() {
     }
 
     /**
@@ -38,7 +38,7 @@ public class PostDto {
      * @param likeCount     the total number of likes on the post
      * @param commentCount  the total number of comments on the post
      */
-    public PostDto(Integer postID, String content, LocalDateTime timestamp,
+    public PostDTO(Integer postID, String content, LocalDateTime timestamp,
                    Integer userID, String username,
                    int likeCount, int commentCount) {
         this.postID = postID;

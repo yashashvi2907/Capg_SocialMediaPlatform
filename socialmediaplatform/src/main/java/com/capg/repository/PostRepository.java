@@ -1,6 +1,6 @@
 package com.capg.repository;
 
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 import com.capg.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -55,6 +55,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             "SIZE(p.likes), SIZE(p.comments)) " +
             "FROM Post p JOIN p.user u " +
             "WHERE LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-    List<PostDto> searchPostsByKeyword(@Param("keyword") String keyword);
+    List<PostDTO> searchPostsByKeyword(@Param("keyword") String keyword);
 
 }

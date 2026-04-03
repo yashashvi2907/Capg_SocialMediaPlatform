@@ -2,7 +2,7 @@ package com.capg.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 
 /**
  * Service interface for managing post-related operations.
@@ -19,7 +19,7 @@ public interface PostService {
      * @param userId the unique identifier of the user
      * @return list of PostDto representing user's posts
      */
-    List<PostDto> getPostsByUser(Integer userId);
+    List<PostDTO> getPostsByUser(Integer userId);
 
     /**
      * Retrieves posts within a specified date range.
@@ -28,7 +28,7 @@ public interface PostService {
      * @param end   the end date-time (inclusive)
      * @return list of PostDto within the given date range
      */
-    List<PostDto> getPostsByDateRange(LocalDateTime start, LocalDateTime end);
+    List<PostDTO> getPostsByDateRange(LocalDateTime start, LocalDateTime end);
 
     /**
      * Searches posts containing a specific keyword.
@@ -36,7 +36,7 @@ public interface PostService {
      * @param keyword the keyword to search in post content
      * @return list of PostDto matching the keyword
      */
-    List<PostDto> searchPosts(String keyword);
+    List<PostDTO> searchPosts(String keyword);
 
     /**
      * Retrieves trending posts.
@@ -47,7 +47,7 @@ public interface PostService {
      *
      * @return list of trending PostDto
      */
-    List<PostDto> getTrendingPosts();
+    List<PostDTO> getTrendingPosts();
 
     /**
      * Generates a personalized feed for a user.
@@ -59,5 +59,5 @@ public interface PostService {
      * @param userId the unique identifier of the user
      * @return list of PostDto representing the user's feed
      */
-    List<PostDto> getFeed(Integer userId);
+    List<PostDTO> getFeed(Integer userId);
 }

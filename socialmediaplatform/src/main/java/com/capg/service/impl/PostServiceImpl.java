@@ -1,6 +1,6 @@
 package com.capg.service.impl;
 
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 import com.capg.entity.Friends;
 import com.capg.entity.Post;
 import com.capg.entity.User;
@@ -46,8 +46,8 @@ public class PostServiceImpl implements PostService {
      * @param post the Post entity
      * @return mapped PostDto object
      */
-    private PostDto mapToDTO(Post post) {
-        final PostDto dto = new PostDto();
+    private PostDTO mapToDTO(Post post) {
+        final PostDTO dto = new PostDTO();
 
         dto.setPostID(post.getPostID());
         dto.setContent(post.getContent());
@@ -71,7 +71,7 @@ public class PostServiceImpl implements PostService {
      * @throws PostNotFoundException  if no posts are found
      */
     @Override
-    public List<PostDto> getPostsByUser(Integer userId) {
+    public List<PostDTO> getPostsByUser(Integer userId) {
 
         if (userId == null) {
             throw new BadRequestException("User ID cannot be null");
@@ -96,7 +96,7 @@ public class PostServiceImpl implements PostService {
      * @throws PostNotFoundException  if no posts exist in range
      */
     @Override
-    public List<PostDto> getPostsByDateRange(LocalDateTime start, LocalDateTime end) {
+    public List<PostDTO> getPostsByDateRange(LocalDateTime start, LocalDateTime end) {
 
         if (start == null || end == null) {
             throw new BadRequestException("Date range cannot be null");
@@ -120,13 +120,13 @@ public class PostServiceImpl implements PostService {
      * @throws PostNotFoundException  if no matching posts found
      */
     @Override
-    public List<PostDto> searchPosts(String keyword) {
+    public List<PostDTO> searchPosts(String keyword) {
 
         if (keyword == null || keyword.isBlank()) {
             throw new BadRequestException("Keyword cannot be empty");
         }
 
-        final List<PostDto> posts = postRepository.searchPostsByKeyword(keyword);
+        final List<PostDTO> posts = postRepository.searchPostsByKeyword(keyword);
 
         if (posts.isEmpty()) {
             throw new PostNotFoundException("No posts found with keyword: " + keyword);
@@ -145,7 +145,7 @@ public class PostServiceImpl implements PostService {
      * @throws PostNotFoundException if no posts exist
      */
     @Override
-    public List<PostDto> getTrendingPosts() {
+    public List<PostDTO> getTrendingPosts() {
 
         final List<Post> posts = postRepository.findAll();
 
@@ -177,7 +177,7 @@ public class PostServiceImpl implements PostService {
      * @throws PostNotFoundException  if no feed posts found
      */
     @Override
-    public List<PostDto> getFeed(Integer userId) {
+    public List<PostDTO> getFeed(Integer userId) {
 
         if (userId == null) {
             throw new BadRequestException("User ID cannot be null");
