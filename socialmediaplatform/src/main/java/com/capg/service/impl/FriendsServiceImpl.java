@@ -4,7 +4,7 @@ package com.capg.service.impl;
 import com.capg.dto.FriendsDTO;
 import com.capg.entity.Friends;
 import com.capg.entity.User;
-import com.capg.repository.IFriendsRepo;
+import com.capg.repository.IFriendsRepository;
 import com.capg.repository.UserRepository;
 import com.capg.service.FriendsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class FriendsServiceImpl implements FriendsService {
 
     @Autowired
-    private IFriendsRepo repo;
+    private IFriendsRepository repo;
 
     @Autowired
     private UserRepository userRepo;
