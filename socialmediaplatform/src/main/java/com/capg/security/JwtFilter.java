@@ -6,30 +6,67 @@ import java.io.IOException;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
+/**
+ * JwtFilter (Security Filter)
+ * 
+ * This filter is used to intercept incoming HTTP requests and validate
+ * the JWT (JSON Web Token) before allowing access to secured APIs.
+ * 
+ * Responsibilities:
+ * - Extract Authorization header from request
+ * - Validate JWT token
+ * - Handle invalid or expired tokens
+ * - Allow request to proceed if token is valid
+ * 
+ * Applied on:
+ * - "/friends/*" endpoints (configured in Config class)
+ */
 public class JwtFilter implements Filter {
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+    /**
+     * This method is executed for every incoming request
+     * 
+     * @param request  incoming HTTP request
+     * @param response outgoing HTTP response
+     * @param chain    filter chain
+     * @throws IOException
+     * @throws ServletException
+     */
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
-		HttpServletRequest req = (HttpServletRequest) request;
+        // Cast request to HttpServletRequest
+        HttpServletRequest req = (HttpServletRequest) request;
 
-		String header = req.getHeader("Authorization");
+        /**
+         * Extract Authorization header
+         * Expected format: "Bearer <token>"
+         */
+        String header = req.getHeader("Authorization");
 
-		if (header == null || !header.startsWith("Bearer ")) {
-			throw new RuntimeException("Token missing!");
-		}
+        // ❌ If token is missing or invalid format
+        if (header == null || !header.startsWith("Bearer ")) {
+            throw new RuntimeException("Token missing!");
+        }
 
-		String token = header.substring(7);
+        // Extract actual token (remove "Bearer ")
+        String token = header.substring(7);
 
-		try {
-			JwtUtil.validateToken(token);
-		} catch (ExpiredJwtException e) {
-			throw new RuntimeException("Time's up! Login again.");
-		} catch (Exception e) {
-			throw new RuntimeException("Invalid token!");
-		}
+        try {
+            // Validate JWT token
+            JwtUtil.validateToken(token);
 
-		chain.doFilter(request, response);
-	}
+        } catch (ExpiredJwtException e) {
+            // ❌ Token expired
+            throw new RuntimeException("Time's up! Login again.");
+
+        } catch (Exception e) {
+            // ❌ Invalid token
+            throw new RuntimeException("Invalid token!");
+        }
+
+        // ✅ Continue request if token is valid
+        chain.doFilter(request, response);
+    }
 }
