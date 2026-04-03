@@ -19,7 +19,7 @@ public class NotificationDTO {
         this.timestamp = timestamp;
         this.username = username;
         this.email = email;
-        this.profilePicture = profilePicture;
+        this.profilePicture = (profilePicture != null) ? profilePicture.clone() : null;
     }
 
 
@@ -28,10 +28,10 @@ public class NotificationDTO {
     public String getUsername() { return username; }
     public String getEmail() { return email; }
 //    public byte[] getProfilePicture() { return profilePicture; }
-public String getProfilePicture() {
-    if (profilePicture == null || profilePicture.length == 0) {
-        return null;
+    public String getProfilePicture() {
+          if (profilePicture == null || profilePicture.length == 0) {
+              return null;
+          }
+          return Base64.getEncoder().encodeToString(profilePicture);
     }
-    return Base64.getEncoder().encodeToString(profilePicture);
-}
 }

@@ -17,20 +17,32 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test class for MessageServiceImpl.
+ * Verifies behavior of message retrieval logic using Mockito.
+ */
 @ExtendWith(MockitoExtension.class)
 class MessageServiceImplTest {
 
+    /**
+     * Mocked MessageRepository dependency.
+     */
     @Mock
     private MessageRepository messageRepository;
 
+    /**
+     * MessageServiceImpl instance with injected mocks.
+     */
     @InjectMocks
     private MessageServiceImpl messageService;
 
-    // Positive Test Case
+    /**
+     * Tests successful retrieval of chat messages between two users.
+     */
     @Test
     void testGetChatsBetweenUser_Success() {
 
-        Message msg = new Message();
+        final Message msg = new Message();
         msg.setMessageID(1);
         msg.setMessageText("Hello");
         msg.setTimestamp(LocalDateTime.now());
@@ -38,21 +50,24 @@ class MessageServiceImplTest {
         when(messageRepository.getChatsBetweenUser(1, 2))
                 .thenReturn(List.of(msg));
 
-        List<MessageDTO> result =
+        final List<MessageDTO> result =
                 messageService.getChatsBetweenUser(1, 2);
 
         assertEquals(1, result.size());
         assertEquals("Hello", result.get(0).getMessageText());
     }
 
-    //  Negative Test Case (Exception)
+    /**
+     * Tests scenario where no messages exist between users.
+     * Expects ResourceNotFoundException to be thrown.
+     */
     @Test
     void testGetChatsBetweenUser_NoMessages() {
 
         when(messageRepository.getChatsBetweenUser(1, 2))
                 .thenReturn(List.of());
 
-        ResourceNotFoundException ex = assertThrows(
+        final ResourceNotFoundException ex = assertThrows(
                 ResourceNotFoundException.class,
                 () -> messageService.getChatsBetweenUser(1, 2)
         );
