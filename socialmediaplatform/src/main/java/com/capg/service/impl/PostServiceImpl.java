@@ -29,8 +29,8 @@ public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
 
-    @Autowired
     private IFriendsRepository friendsRepo;
+
 
     /**
      * Constructor-based dependency injection.
