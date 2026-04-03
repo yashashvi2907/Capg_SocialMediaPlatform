@@ -49,7 +49,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
      * @param keyword the keyword to search in post content
      * @return list of PostDto containing matched posts
      */
-    @Query("SELECT new com.capg.dto.PostDto(" +
+    @Query("SELECT new com.capg.dto.PostDTO(" +
             "p.postID, p.content, p.timestamp, " +
             "u.userID, u.username, " +
             "SIZE(p.likes), SIZE(p.comments)) " +
