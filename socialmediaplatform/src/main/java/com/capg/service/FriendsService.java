@@ -80,5 +80,15 @@ public interface FriendsService {
      */
     List<FriendsDTO> getAllAccepted();
     
+    /**
+     * Finds mutual friends between two users.
+     *
+     * <p>This method compares accepted friend lists of both users
+     * and returns the common connections.</p>
+     *
+     * @param user1Id ID of first user
+     * @param user2Id ID of second user
+     * @return List of mutual friends
+     */
     List<FriendsDTO> getMutualFriends(Integer user1Id, Integer user2Id);
 }
