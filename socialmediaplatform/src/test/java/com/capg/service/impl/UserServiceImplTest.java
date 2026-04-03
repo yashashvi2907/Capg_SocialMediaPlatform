@@ -18,24 +18,36 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test class for UserServiceImpl.
+ * Verifies behavior of retrieving user posts using mocked repository.
+ */
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
+    /**
+     * Mocked PostRepository dependency.
+     */
     @Mock
     private PostRepository postRepository;
 
+    /**
+     * UserServiceImpl instance with injected mocks.
+     */
     @InjectMocks
     private UserServiceImpl userService;
 
-    // ✅ Positive Test
+    /**
+     * Tests successful retrieval of posts for a user.
+     */
     @Test
     void testGetUserPosts_Success() {
 
-        User user = new User();
+        final User user = new User();
         user.setUserID(1);
         user.setUsername("testUser");
 
-        Post post = new Post();
+        final Post post = new Post();
         post.setPostID(10);
         post.setContent("Hello");
         post.setTimestamp(LocalDateTime.now());
@@ -46,21 +58,24 @@ class UserServiceImplTest {
         when(postRepository.findByUserUserID(1))
                 .thenReturn(List.of(post));
 
-        List<PostDto> result = userService.getUserPosts(1);
+        final List<PostDto> result = userService.getUserPosts(1);
 
         assertEquals(1, result.size());
         assertEquals("Hello", result.get(0).getContent());
         assertEquals(1, result.get(0).getUserID());
     }
 
-    // ❌ Negative Test
+    /**
+     * Tests scenario where no posts exist for a user.
+     * Expects UserNotFound exception to be thrown.
+     */
     @Test
     void testGetUserPosts_NoPosts() {
 
         when(postRepository.findByUserUserID(1))
                 .thenReturn(List.of());
 
-        UserNotFound ex = assertThrows(
+        final UserNotFound ex = assertThrows(
                 UserNotFound.class,
                 () -> userService.getUserPosts(1)
         );
