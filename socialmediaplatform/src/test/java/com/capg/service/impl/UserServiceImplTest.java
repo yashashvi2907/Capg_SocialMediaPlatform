@@ -1,6 +1,6 @@
 package com.capg.service.impl;
 
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 import com.capg.entity.Post;
 import com.capg.entity.User;
 import com.capg.repository.PostRepository;
@@ -58,7 +58,7 @@ class UserServiceImplTest {
         when(postRepository.findByUserUserID(1))
                 .thenReturn(List.of(post));
 
-        final List<PostDto> result = userService.getUserPosts(1);
+        final List<PostDTO> result = userService.getUserPosts(1);
 
         assertEquals(1, result.size());
         assertEquals("Hello", result.get(0).getContent());

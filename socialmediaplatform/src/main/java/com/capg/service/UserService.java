@@ -1,6 +1,6 @@
 package com.capg.service;
 
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 
 import java.util.List;
 
@@ -16,6 +16,6 @@ public interface UserService {
      * @param userId unique identifier of the user
      * @return list of PostDto representing user posts
      */
-    List<PostDto> getUserPosts(Integer userId);
+    List<PostDTO> getUserPosts(Integer userId);
 
 }

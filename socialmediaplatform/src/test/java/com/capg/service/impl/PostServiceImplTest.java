@@ -1,6 +1,6 @@
 package com.capg.service.impl;
 
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 import com.capg.exception.BadRequestException;
 import com.capg.exception.PostNotFoundException;
 import com.capg.repository.IFriendsRepository;
@@ -51,11 +51,16 @@ class PostServiceImplTest {
     @InjectMocks
     private PostServiceImpl postService;
 
-    //Positive Test Case
-    @Test
-    void testSearchPosts_ValidKeyword_ReturnsPostList() {
+    public PostServiceImplTest() {
+    }
 
-        PostDto dto = new PostDto(
+    /**
+     * Positive Test Case
+     */
+    @Test
+    void testSearchPostsValidKeywordReturnsPostList() {
+
+        final PostDTO dto = new PostDTO(
                 100,
                 CONTENT,
                 LocalDateTime.now(),
@@ -65,50 +70,54 @@ class PostServiceImplTest {
                 0
         );
 
-        List<PostDto> mockPosts = List.of(dto);
+        final List<PostDTO> mockPosts = List.of(dto);
 
         when(postRepository.searchPostsByKeyword(VALID_KEYWORD))
                 .thenReturn(mockPosts);
 
-        List<PostDto> result = postService.searchPosts(VALID_KEYWORD);
+        final List<PostDTO> result = postService.searchPosts(VALID_KEYWORD);
 
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals(CONTENT, result.get(0).getContent());
+        assertNotNull(result,"Result list should not be null");
+        assertEquals(1, result.size(),"Result list should contain exactly one element");
+        assertEquals(CONTENT, result.getFirst().getContent(),"Posts content should match expected message");
 
         verify(postRepository, times(1))
                 .searchPostsByKeyword(VALID_KEYWORD);
     }
 
-    //Negative Test Case: No posts found
+    /**
+     * Negative Test Case: No posts found
+     */
     @Test
-    void testSearchPosts_NoPostsFound_ThrowsException() {
+    void testSearchPostsNoPostsFoundThrowsException() {
 
         when(postRepository.searchPostsByKeyword(VALID_KEYWORD))
                 .thenReturn(Collections.emptyList());
 
-        PostNotFoundException exception = assertThrows(
+        final PostNotFoundException exception = assertThrows(
                 PostNotFoundException.class,
                 () -> postService.searchPosts(VALID_KEYWORD)
         );
 
         assertEquals("No posts found with keyword: " + VALID_KEYWORD,
-                exception.getMessage());
+                exception.getMessage(),"Exception message should match expected text");
 
         verify(postRepository, times(1))
                 .searchPostsByKeyword(VALID_KEYWORD);
     }
 
-    //Negative Test Case: Invalid keyword
+    /**
+     * Negative Test Case: Invalid keyword
+     */
     @Test
-    void testSearchPosts_InvalidKeyword_ThrowsException() {
+    void testSearchPostsInvalidKeywordThrowsException() {
 
-        BadRequestException exception = assertThrows(
+        final BadRequestException exception = assertThrows(
                 BadRequestException.class,
                 () -> postService.searchPosts(EMPTY_KEYWORD)
         );
 
-        assertEquals("Keyword cannot be empty", exception.getMessage());
+        assertEquals("Keyword cannot be empty", exception.getMessage(),"Exception message should match expected text");
 
         verify(postRepository, never())
                 .searchPostsByKeyword(anyString());

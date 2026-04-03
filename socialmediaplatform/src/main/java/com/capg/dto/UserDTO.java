@@ -4,7 +4,7 @@ package com.capg.dto;
  * Data Transfer Object for User entity.
  * Used to transfer user data between layers.
  */
-public class UserDto {
+public class UserDTO {
 
     /**
      * Unique identifier of the user.
@@ -29,7 +29,7 @@ public class UserDto {
     /**
      * Default constructor.
      */
-    public UserDto() {
+    public UserDTO() {
         // default constructor
     }
 

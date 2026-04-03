@@ -1,12 +1,11 @@
 package com.capg.service.impl;
 
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 import com.capg.entity.Post;
 import com.capg.exception.UserNotFound;
 import com.capg.repository.PostRepository;
 import com.capg.service.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<PostDto> getUserPosts(final Integer userId) {
+    public List<PostDTO> getUserPosts(final Integer userId) {
 
         final List<Post> posts = postRepository.findByUserUserID(userId);
 
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService {
         }
 
         return posts.stream().map(post -> {
-            final PostDto dto = new PostDto();
+            final PostDTO dto = new PostDTO();
 
             dto.setPostID(post.getPostID());
             dto.setContent(post.getContent());
