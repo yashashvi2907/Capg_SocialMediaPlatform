@@ -6,7 +6,7 @@ import com.capg.entity.Post;
 import com.capg.entity.User;
 import com.capg.exception.BadRequestException;
 import com.capg.exception.PostNotFoundException;
-import com.capg.repository.IFriendsRepo;
+import com.capg.repository.IFriendsRepository;
 import com.capg.repository.PostRepository;
 import com.capg.service.PostService;
 
@@ -24,7 +24,7 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
 
     @Autowired
-    private IFriendsRepo friendsRepo;
+    private IFriendsRepository friendsRepo;
 
     //DTO Mapper
     private PostDto mapToDTO(Post post) {

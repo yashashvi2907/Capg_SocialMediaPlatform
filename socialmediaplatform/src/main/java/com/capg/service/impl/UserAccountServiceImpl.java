@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capg.entity.UserAccount;
-import com.capg.repository.IUserAccountRepo;
+import com.capg.repository.IUserAccountRepository;
 import com.capg.service.IUserAccountService;
 
 /**
@@ -30,7 +30,7 @@ public class UserAccountServiceImpl implements IUserAccountService {
      * Repository for UserAccount entity
      */
     @Autowired
-    private IUserAccountRepo repo;
+    private IUserAccountRepository repo;
 
     /**
      * Register a new user account

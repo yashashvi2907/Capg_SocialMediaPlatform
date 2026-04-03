@@ -3,7 +3,7 @@ package com.capg.service.impl;
 import com.capg.dto.FriendsDTO;
 import com.capg.entity.Friends;
 import com.capg.entity.User;
-import com.capg.repository.IFriendsRepo;
+import com.capg.repository.IFriendsRepository;
 import com.capg.repository.UserRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 public class FriendsServiceImplTest {
 
     @Mock
-    private IFriendsRepo repo;
+    private IFriendsRepository repo;
 
     @Mock
     private UserRepository userRepo;

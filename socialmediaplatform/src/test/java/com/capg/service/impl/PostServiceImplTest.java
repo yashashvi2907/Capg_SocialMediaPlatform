@@ -3,7 +3,7 @@ package com.capg.service.impl;
 import com.capg.dto.PostDto;
 import com.capg.exception.BadRequestException;
 import com.capg.exception.PostNotFoundException;
-import com.capg.repository.IFriendsRepo;
+import com.capg.repository.IFriendsRepository;
 import com.capg.repository.PostRepository;
 
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class PostServiceImplTest {
 
     /** Mocked FriendsRepo (required dependency) */
     @Mock
-    private IFriendsRepo friendsRepo;
+    private IFriendsRepository friendsRepo;
 
     /** Service under test */
     @InjectMocks
