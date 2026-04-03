@@ -2,6 +2,7 @@ package com.capg.service.impl;
 
 import java.util.List;
 
+import com.capg.exception.GroupNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,22 @@ import com.capg.entity.User;
 import com.capg.repository.GroupRepository;
 import com.capg.service.GroupService;
 
+/**
+ * Implementation of GroupService interface.
+ * Handles business logic related to Groups.
+ */
 @Service
 public class GroupServiceImpl implements GroupService {
 
+    /** Repository for accessing Group data. */
     @Autowired
     private GroupRepository groupRepository;
 
+    /**
+     * Retrieves all groups from the database.
+     *
+     * @return list of GroupDTO
+     */
     @Override
     public List<GroupDTO> getAllGroups() {
 
@@ -35,11 +46,18 @@ public class GroupServiceImpl implements GroupService {
         }).toList();
     }
 
+    /**
+     * Retrieves a group by its ID.
+     *
+     * @param id group ID
+     * @return GroupDTO
+     * @throws GroupNotFoundException if group not found
+     */
     @Override
     public GroupDTO getGroupById(Integer id) {
 
         Group group = groupRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Group not found with id: " + id));
+                .orElseThrow(() -> new GroupNotFoundException("Group not found with id: " + id));
 
         User admin = group.getAdmin();
 
@@ -51,5 +69,4 @@ public class GroupServiceImpl implements GroupService {
                 admin != null ? admin.getEmail() : null
         );
     }
-
 }

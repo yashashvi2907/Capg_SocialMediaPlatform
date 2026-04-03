@@ -8,68 +8,46 @@ import com.capg.entity.UserAccount;
 import com.capg.security.JwtUtil;
 import com.capg.service.IUserAccountService;
 
-
+/**
+ * UserAccountController
+ * 
+ * This controller handles user authentication APIs such as login.
+ * 
+ * Responsibilities:
+ * - Authenticate user credentials
+ * - Generate JWT token upon successful login
+ * 
+ * Base URL: /account
+ */
 @RestController
 @RequestMapping("/account")
 public class UserAccountController {
 
+    /**
+     * Service layer for user account operations
+     */
     @Autowired
     private IUserAccountService service;
     
+    /**
+     * Login API
+     * 
+     * This API authenticates the user using username and password.
+     * If credentials are valid, a JWT token is generated and returned.
+     * 
+     * @param dto LoginDTO containing username and password
+     * @return JWT token in "Bearer <token>" format
+     */
     @PostMapping("/login")
     public String login(@RequestBody LoginDTO dto) {
 
+        // Authenticate user
         UserAccount user = service.login(dto.getUsername(), dto.getPassword());
 
+        // Generate JWT token
         String token = JwtUtil.generateToken(user.getUsername());
 
+        // Return token with Bearer prefix
         return "Bearer " + token;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-//  Register API
-// @PostMapping("/register")
-// public UserAccount register(@RequestBody UserAccount account) {
-//     return service.register(account);
-// }
-
-// @PostMapping("/login")
-// public String login(@RequestBody LoginDTO dto, HttpSession session) {
-//
-//     UserAccount user = service.login(dto.getUsername(), dto.getPassword());
-//
-//     session.setAttribute("loggedUser", user);
-//
-//     // Store login time
-//     session.setAttribute("loginTime", System.currentTimeMillis());
-//
-//     // 1 minute session
-//     session.setMaxInactiveInterval(60);
-//
-//     return "Login Successful!!  Welcome " + user.getUsername();
-// }
-    
-    
-//    public void checkLogin(HttpSession session) {
-//        if (session.getAttribute("loggedUser") == null) {
-//        	throw new UnauthorizedException("Please login first");
-//        }
-//    }

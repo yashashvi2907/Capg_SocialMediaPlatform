@@ -1,137 +1,125 @@
 package com.capg.service.impl;
 
-import com.capg.dto.PostDto;
-import com.capg.entity.Post;
-import com.capg.entity.User;
-import com.capg.entity.Friends;
+import com.capg.dto.PostDTO;
+import com.capg.exception.BadRequestException;
 import com.capg.exception.PostNotFoundException;
+import com.capg.repository.IFriendsRepository;
 import com.capg.repository.PostRepository;
-import com.capg.repository.IFriendsRepo;
-import com.capg.service.impl.PostServiceImpl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for PostServiceImpl (searchPosts method).
+ * Uses DTO-based repository approach.
+ */
+@ExtendWith(MockitoExtension.class)
 class PostServiceImplTest {
 
+    /** Valid keyword for positive test */
+    private static final String VALID_KEYWORD = "java";
+
+    /** Invalid keyword (blank input) */
+    private static final String EMPTY_KEYWORD = " ";
+
+    /** Sample user ID */
+    private static final Integer USER_ID = 1;
+
+    /** Sample content */
+    private static final String CONTENT = "Learning Java Streams";
+
+    /** Mocked PostRepository */
     @Mock
     private PostRepository postRepository;
 
+    /** Mocked FriendsRepo (required dependency) */
     @Mock
-    private IFriendsRepo friendsRepo;
+    private IFriendsRepository friendsRepo;
 
+    /** Service under test */
     @InjectMocks
     private PostServiceImpl postService;
 
-    //Initialize mocks
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    public PostServiceImplTest() {
     }
 
-    //TRENDING TESTS
-
-    //Positive Test
+    /**
+     * Positive Test Case
+     */
     @Test
-    void testGetTrendingPostsSuccess() {
+    void testSearchPostsValidKeywordReturnsPostList() {
 
-        Post post = new Post();
-        post.setPostID(1);
-        post.setContent("coding tips");
-        post.setTimestamp(LocalDateTime.now());
+        final PostDTO dto = new PostDTO(
+                100,
+                CONTENT,
+                LocalDateTime.now(),
+                USER_ID,
+                "test_user",
+                0,
+                0
+        );
 
-        User user = new User();
-        user.setUserID(1);
-        user.setUsername("user1");
+        final List<PostDTO> mockPosts = List.of(dto);
 
-        post.setUser(user);
-        post.setComments(new ArrayList<>());
-        post.setLikes(new ArrayList<>());
+        when(postRepository.searchPostsByKeyword(VALID_KEYWORD))
+                .thenReturn(mockPosts);
 
-        when(postRepository.findAll()).thenReturn(List.of(post));
+        final List<PostDTO> result = postService.searchPosts(VALID_KEYWORD);
 
-        List<PostDto> result = postService.getTrendingPosts();
+        assertNotNull(result,"Result list should not be null");
+        assertEquals(1, result.size(),"Result list should contain exactly one element");
+        assertEquals(CONTENT, result.getFirst().getContent(),"Posts content should match expected message");
 
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
-        assertEquals("coding tips", result.get(0).getContent());
+        verify(postRepository, times(1))
+                .searchPostsByKeyword(VALID_KEYWORD);
     }
 
-    // Negative Test
+    /**
+     * Negative Test Case: No posts found
+     */
     @Test
-    void testGetTrendingPostsNoData() {
+    void testSearchPostsNoPostsFoundThrowsException() {
 
-        when(postRepository.findAll()).thenReturn(Collections.emptyList());
-
-        assertThrows(PostNotFoundException.class, () -> {
-            postService.getTrendingPosts();
-        });
-    }
-
-    //FEED TESTS
-
-    @Test
-    void getFeedValidUserReturnsFeedPosts() {
-
-        Integer userId = 1;
-
-        // friend user
-        User friendUser = new User();
-        friendUser.setUserID(2);
-
-        // friendship
-        Friends friend = new Friends();
-        User user = new User();
-        user.setUserID(userId);
-
-        friend.setUser1(user);
-        friend.setUser2(friendUser);
-
-        // post by friend
-        Post post = new Post();
-        post.setPostID(101);
-        post.setContent("hello from friend");
-        post.setTimestamp(LocalDateTime.now());
-        post.setUser(friendUser);
-        post.setComments(new ArrayList<>());
-        post.setLikes(new ArrayList<>());
-
-        when(friendsRepo.findByUser1OrUser2(any(User.class), any(User.class)))
-                .thenReturn(List.of(friend));
-
-        when(postRepository.findAll())
-                .thenReturn(List.of(post));
-
-        List<PostDto> result = postService.getFeed(userId);
-
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
-    }
-
-    //Negative Test
-    @Test
-    void testGetFeedNoPosts() {
-
-        Integer userId = 1;
-
-        User user = new User();
-        user.setUserID(userId);
-
-        when(friendsRepo.findByUser1OrUser2(user, user))
+        when(postRepository.searchPostsByKeyword(VALID_KEYWORD))
                 .thenReturn(Collections.emptyList());
 
-        when(postRepository.findAll())
-                .thenReturn(Collections.emptyList());
+        final PostNotFoundException exception = assertThrows(
+                PostNotFoundException.class,
+                () -> postService.searchPosts(VALID_KEYWORD)
+        );
 
-        assertThrows(PostNotFoundException.class, () -> {
-            postService.getFeed(userId);
-        });
+        assertEquals("No posts found with keyword: " + VALID_KEYWORD,
+                exception.getMessage(),"Exception message should match expected text");
+
+        verify(postRepository, times(1))
+                .searchPostsByKeyword(VALID_KEYWORD);
+    }
+
+    /**
+     * Negative Test Case: Invalid keyword
+     */
+    @Test
+    void testSearchPostsInvalidKeywordThrowsException() {
+
+        final BadRequestException exception = assertThrows(
+                BadRequestException.class,
+                () -> postService.searchPosts(EMPTY_KEYWORD)
+        );
+
+        assertEquals("Keyword cannot be empty", exception.getMessage(),"Exception message should match expected text");
+
+        verify(postRepository, never())
+                .searchPostsByKeyword(anyString());
     }
 }
