@@ -29,6 +29,7 @@ public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
 
+
     private IFriendsRepository friendsRepo;
 
 
