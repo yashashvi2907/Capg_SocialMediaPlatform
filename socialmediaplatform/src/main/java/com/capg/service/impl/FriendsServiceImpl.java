@@ -1,9 +1,10 @@
-
 package com.capg.service.impl;
 
 import com.capg.dto.FriendsDTO;
 import com.capg.entity.Friends;
 import com.capg.entity.User;
+import com.capg.exception.FriendNotFoundException;
+import com.capg.exception.NoDataFoundException;
 import com.capg.repository.IFriendsRepository;
 import com.capg.repository.UserRepository;
 import com.capg.service.FriendsService;
@@ -11,17 +12,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * FriendsServiceImpl (Service Implementation)
+ * 
+ * This class implements FriendsService interface and contains
+ * the business logic for managing friendships in the system.
+ * 
+ * Responsibilities:
+ * - Add friend request
+ * - Fetch all friends
+ * - Fetch friend by ID
+ * - Delete friendship
+ * - Fetch pending and accepted requests
+ * 
+ * It interacts with Repository layer to perform database operations.
+ */
 @Service
 public class FriendsServiceImpl implements FriendsService {
 
+    /**
+     * Repository for Friends entity
+     */
     @Autowired
     private IFriendsRepository repo;
 
+    /**
+     * Repository for User entity
+     */
     @Autowired
     private UserRepository userRepo;
 
+    /**
+     * Add a new friend request
+     * 
+     * @param dto FriendsDTO containing sender, receiver, and status
+     * @return saved FriendsDTO
+     */
     @Override
     public FriendsDTO addFriend(FriendsDTO dto) {
 
@@ -36,62 +65,207 @@ public class FriendsServiceImpl implements FriendsService {
         return convertToDTO(repo.save(f));
     }
 
+    /**
+     * Fetch all friendships in the system
+     * 
+     * @return list of all friends
+     * @throws NoDataFoundException if no data exists
+     */
     @Override
     public List<FriendsDTO> getAllFriends() {
-        return repo.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+
+        List<FriendsDTO> list = repo.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No friends available");
+        }
+
+        return list;
     }
 
+    /**
+     * Fetch friend by ID
+     * 
+     * @param id friendship ID
+     * @return FriendsDTO object
+     * @throws FriendNotFoundException if not found
+     */
     @Override
     public FriendsDTO getFriendById(Integer id) {
-        Friends f = repo.findById(id).orElseThrow(() -> new RuntimeException("Friend not found"));
+        Friends f = repo.findById(id)
+                .orElseThrow(() -> new FriendNotFoundException("Friend not found with ID: " + id));
         return convertToDTO(f);
     }
 
+    /**
+     * Delete a friendship by ID
+     * 
+     * @param id friendship ID
+     */
     @Override
     public void deleteFriend(Integer id) {
         repo.deleteById(id);
     }
 
+    /**
+     * Fetch pending friend requests for a user
+     * 
+     * @param userId user ID
+     * @return list of pending requests
+     * @throws FriendNotFoundException if user not found
+     * @throws NoDataFoundException if no requests exist
+     */
     @Override
     public List<FriendsDTO> getPendingRequests(Integer userId) {
 
-        User user = userRepo.findById(userId).orElse(null);
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new FriendNotFoundException("User not found with ID: " + userId));
 
-        return repo.findByUser2AndStatus(user, "pending")
+        List<FriendsDTO> list = repo.findByUser2AndStatus(user, "pending")
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No pending requests found");
+        }
+
+        return list;
     }
 
+    /**
+     * Fetch accepted friends for a user
+     * 
+     * @param userId user ID
+     * @return list of accepted friends
+     * @throws FriendNotFoundException if user not found
+     * @throws NoDataFoundException if no friends exist
+     */
     @Override
     public List<FriendsDTO> getAcceptedFriends(Integer userId) {
 
-        User user = userRepo.findById(userId).orElse(null);
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new FriendNotFoundException("User not found with ID: " + userId));
 
-        return repo.findByUser1OrUser2(user, user)
+        List<FriendsDTO> list = repo.findByUser1OrUser2(user, user)
                 .stream()
                 .filter(f -> f.getStatus().equalsIgnoreCase("accepted"))
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No accepted friends found");
+        }
+
+        return list;
     }
-    
+
+    /**
+     * Fetch all pending friend requests in the system
+     * 
+     * @return list of pending friendships
+     * @throws NoDataFoundException if no data exists
+     */
     @Override
     public List<FriendsDTO> getAllPending() {
-        return repo.findByStatus("pending")
+
+        List<FriendsDTO> list = repo.findByStatus("pending")
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No pending requests in system");
+        }
+
+        return list;
     }
 
+    /**
+     * Fetch all accepted friendships in the system
+     * 
+     * @return list of accepted friendships
+     * @throws NoDataFoundException if no data exists
+     */
     @Override
     public List<FriendsDTO> getAllAccepted() {
-        return repo.findByStatus("accepted")
+
+        List<FriendsDTO> list = repo.findByStatus("accepted")
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
-    }
 
-    // CONVERT ENTITY → DTO
+        if (list.isEmpty()) {
+            throw new NoDataFoundException("No accepted friendships in system");
+        }
+
+        return list;
+    }
+    
+    /**
+     * Implementation of mutual friends logic.
+     * @param user1Id ID of first user
+     * @param user2Id ID of second user
+     * @return List of mutual friends as DTO
+     *
+     * @throws RuntimeException if any user is not found
+     */
+    
+    @Override
+    public List<FriendsDTO> getMutualFriends(Integer user1Id, Integer user2Id) {
+
+        //  Fetch users
+        User user1 = userRepo.findById(user1Id)
+                .orElseThrow(() -> new RuntimeException("User1 not found"));
+
+        User user2 = userRepo.findById(user2Id)
+                .orElseThrow(() -> new RuntimeException("User2 not found"));
+
+        // Get accepted friends of user1
+        List<Friends> list1 = repo.findByUser1OrUser2(user1, user1)
+                .stream()
+                .filter(f -> f.getStatus().equalsIgnoreCase("accepted"))
+                .toList();
+
+        // Get accepted friends of user2
+        List<Friends> list2 = repo.findByUser1OrUser2(user2, user2)
+                .stream()
+                .filter(f -> f.getStatus().equalsIgnoreCase("accepted"))
+                .toList();
+
+        // Extract friend IDs of user1
+        Set<Integer> set1 = list1.stream()
+                .map(f -> f.getUser1().getUserID().equals(user1Id)
+                        ? f.getUser2().getUserID()
+                        : f.getUser1().getUserID())
+                .collect(Collectors.toSet());
+
+        // 🔥 Extract friend IDs of user2
+        Set<Integer> set2 = list2.stream()
+                .map(f -> f.getUser1().getUserID().equals(user2Id)
+                        ? f.getUser2().getUserID()
+                        : f.getUser1().getUserID())
+                .collect(Collectors.toSet());
+
+        //  Find common friends
+        set1.retainAll(set2);
+
+        //  Convert to DTO
+        return set1.stream()
+                .map(id -> new FriendsDTO(null, user1Id, id, "mutual"))
+                .collect(Collectors.toList());
+    }
+    
+
+    /**
+     * Convert Friends Entity to FriendsDTO
+     * 
+     * @param f Friends entity
+     * @return FriendsDTO object
+     */
     private FriendsDTO convertToDTO(Friends f) {
         return new FriendsDTO(
                 f.getFriendshipID(),
@@ -100,4 +274,7 @@ public class FriendsServiceImpl implements FriendsService {
                 f.getStatus()
         );
     }
+    
+   
+    
 }
