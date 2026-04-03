@@ -22,10 +22,6 @@ public class UserAccount {
 	@Column(nullable = false)
 	private String status;
 
-	@OneToOne
-	@JoinColumn(name = "userID", nullable = false, unique = true)
-	private User user;
-
 	public Integer getAccountId() {
 		return accountId;
 	}
@@ -56,14 +52,6 @@ public class UserAccount {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public String getUsername() {

@@ -87,12 +87,6 @@ public class User {
     private List<Friends> friends1;
 
     /**
-     * User account associated with this user.
-     */
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserAccount userAccount;
-
-    /**
      * Default constructor.
      */
     public User() {
@@ -193,13 +187,5 @@ public class User {
 
     public void setFriends1(final List<Friends> friends1) {
         this.friends1 = friends1;
-    }
-
-    public UserAccount getUserAccount() {
-        return userAccount;
-    }
-
-    public void setUserAccount(final UserAccount userAccount) {
-        this.userAccount = userAccount;
     }
 }
