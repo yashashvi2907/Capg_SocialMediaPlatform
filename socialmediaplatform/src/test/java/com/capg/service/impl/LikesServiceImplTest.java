@@ -4,6 +4,7 @@ import com.capg.dto.LikesDTO;
 import com.capg.entity.Likes;
 import com.capg.entity.Post;
 import com.capg.entity.User;
+import com.capg.exception.LikesNotFoundException;
 import com.capg.repository.LikesRepository;
 
 import org.junit.jupiter.api.Test;
@@ -31,23 +32,18 @@ class LikesServiceImplTest {
     @Test
     void testGetLikesByPost_Success() {
 
-        // Mock User
         User user = new User();
         user.setUserID(1);
         user.setUsername("Disha");
 
-        // Mock Post
         Post post = new Post();
         post.setPostID(100);
 
-        // Mock Likes
         Likes like = new Likes();
         like.setLikeID(10);
         like.setTimestamp(LocalDateTime.now());
         like.setPost(post);
-
-        // IMPORTANT (setter missing in your entity)
-        like.setUser(user);   // ⚠️ Make sure setter exists
+        like.setUser(user); // make sure setter is correct
 
         when(likeRepository.findByPostPostID(100))
                 .thenReturn(List.of(like));
@@ -61,15 +57,15 @@ class LikesServiceImplTest {
         assertEquals(100, result.get(0).getPostID());
     }
 
-    // ❌ 2. Negative Test Case (No Likes Found)
+    // ❌ 2. Negative Test Case (UPDATED ✅)
     @Test
-    void testGetLikesByPost_EmptyList() {
+    void testGetLikesByPost_NotFound() {
 
         when(likeRepository.findByPostPostID(200))
                 .thenReturn(List.of());
 
-        List<LikesDTO> result = likesService.getLikesByPost(200);
-
-        assertTrue(result.isEmpty());
+        assertThrows(LikesNotFoundException.class,
+                () -> likesService.getLikesByPost(200)
+        );
     }
 }

@@ -12,12 +12,22 @@ import com.capg.entity.User;
 import com.capg.repository.GroupRepository;
 import com.capg.service.GroupService;
 
+/**
+ * Implementation of GroupService interface.
+ * Handles business logic related to Groups.
+ */
 @Service
 public class GroupServiceImpl implements GroupService {
 
+    /** Repository for accessing Group data. */
     @Autowired
     private GroupRepository groupRepository;
 
+    /**
+     * Retrieves all groups from the database.
+     *
+     * @return list of GroupDTO
+     */
     @Override
     public List<GroupDTO> getAllGroups() {
 
@@ -36,6 +46,13 @@ public class GroupServiceImpl implements GroupService {
         }).toList();
     }
 
+    /**
+     * Retrieves a group by its ID.
+     *
+     * @param id group ID
+     * @return GroupDTO
+     * @throws GroupNotFoundException if group not found
+     */
     @Override
     public GroupDTO getGroupById(Integer id) {
 
@@ -52,5 +69,4 @@ public class GroupServiceImpl implements GroupService {
                 admin != null ? admin.getEmail() : null
         );
     }
-
 }

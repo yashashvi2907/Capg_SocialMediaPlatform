@@ -50,9 +50,6 @@ public class User {
     @OneToMany(mappedBy = "user1")
     private List<Friends> friends1;
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private UserAccount userAccount;
-
     public Integer getUserID() {
         return userID;
     }
@@ -149,11 +146,5 @@ public class User {
         this.friends1 = friends1;
     }
 
-    public UserAccount getUserAccount() {
-        return userAccount;
-    }
 
-    public void setUserAccount(UserAccount userAccount) {
-        this.userAccount = userAccount;
-    }
 }

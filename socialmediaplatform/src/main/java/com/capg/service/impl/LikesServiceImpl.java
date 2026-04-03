@@ -11,23 +11,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of LikesService interface.
+ * Handles business logic related to Likes.
+ */
 @Service
 public class LikesServiceImpl implements LikesService {
 
+    /** Repository for accessing Likes data. */
     @Autowired
     private LikesRepository likeRepository;
 
+    /**
+     * Retrieves all likes for a given post ID.
+     *
+     * @param postId ID of the post
+     * @return list of LikesDTO
+     * @throws LikesNotFoundException if no likes found
+     */
     @Override
     public List<LikesDTO> getLikesByPost(Integer postId) {
 
         List<Likes> likes = likeRepository.findByPostPostID(postId);
 
-        // 🔴 Throw exception if no likes found
         if (likes.isEmpty()) {
             throw new LikesNotFoundException("No likes found for post id: " + postId);
         }
 
-        // ✅ Convert Entity → DTO
         return likes.stream().map(like -> {
             LikesDTO dto = new LikesDTO();
 
