@@ -79,4 +79,6 @@ public interface FriendsService {
      * @return list of all accepted friendships
      */
     List<FriendsDTO> getAllAccepted();
+    
+    List<FriendsDTO> getMutualFriends(Integer user1Id, Integer user2Id);
 }
