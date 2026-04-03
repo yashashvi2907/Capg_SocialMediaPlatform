@@ -33,7 +33,6 @@ public class PostServiceImpl implements PostService {
     private IFriendsRepository friendsRepo;
 
 
-
     /**
      * Constructor-based dependency injection.
      *
