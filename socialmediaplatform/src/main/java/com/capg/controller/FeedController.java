@@ -1,6 +1,6 @@
 package com.capg.controller;
 
-import com.capg.dto.PostDto;
+import com.capg.dto.PostDTO;
 import com.capg.service.PostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class FeedController {
 
     //Get Feed for a User (Friends + Self)
     @GetMapping("/{userId}")
-    public ResponseEntity<List<PostDto>> getFeed(@PathVariable Integer userId) {
+    public ResponseEntity<List<PostDTO>> getFeed(@PathVariable Integer userId) {
         return ResponseEntity.ok(postService.getFeed(userId));
     }
 }
