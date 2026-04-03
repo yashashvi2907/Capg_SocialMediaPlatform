@@ -25,6 +25,7 @@ public class Message {
 	/**
 	 * Content of the message.
 	 */
+	@Column(name="message_text")
 	private String messageText;
 
 	/**
