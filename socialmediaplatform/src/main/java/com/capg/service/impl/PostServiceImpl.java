@@ -28,8 +28,11 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
+<<<<<<< HEAD
+=======
 
     @Autowired
+>>>>>>> 7a33d202fa4f241a8f7da0b89dbf6e3326a6964b
     private IFriendsRepository friendsRepo;
 
 
