@@ -10,6 +10,7 @@ import com.capg.repository.IFriendsRepository;
 import com.capg.repository.PostRepository;
 import com.capg.service.PostService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,11 +28,8 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
-<<<<<<< HEAD
-=======
 
     @Autowired
->>>>>>> 7a33d202fa4f241a8f7da0b89dbf6e3326a6964b
     private IFriendsRepository friendsRepo;
 
     /**
