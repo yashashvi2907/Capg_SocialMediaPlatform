@@ -27,8 +27,11 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
+<<<<<<< HEAD
+=======
 
     @Autowired
+>>>>>>> 7a33d202fa4f241a8f7da0b89dbf6e3326a6964b
     private IFriendsRepository friendsRepo;
 
     /**
@@ -37,7 +40,7 @@ public class PostServiceImpl implements PostService {
      * @param postRepository repository for post data
      * @param friendsRepo    repository for friends relationship
      */
-    public PostServiceImpl(PostRepository postRepository, IFriendsRepo friendsRepo) {
+    public PostServiceImpl(PostRepository postRepository, IFriendsRepository friendsRepo) {
         this.postRepository = postRepository;
         this.friendsRepo = friendsRepo;
     }

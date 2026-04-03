@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/notifications")
-public class NotificationRestController {
+public class NotificationController {
 
     private final NotificationService service;
 
@@ -26,7 +26,7 @@ public class NotificationRestController {
      *
      * @param service the notification service layer
      */
-    public NotificationRestController(NotificationService service) {
+    public NotificationController(NotificationService service) {
         this.service = service;
     }
     /**
