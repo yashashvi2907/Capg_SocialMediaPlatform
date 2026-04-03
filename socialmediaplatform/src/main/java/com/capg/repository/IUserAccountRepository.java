@@ -17,7 +17,7 @@ import com.capg.entity.UserAccount;
  * 
  * Custom query methods are defined using Spring Data JPA naming conventions.
  */
-public interface IUserAccountRepo extends JpaRepository<UserAccount, Integer> {
+public interface IUserAccountRepository extends JpaRepository<UserAccount, Integer> {
 
     /**
      * Find user account by username

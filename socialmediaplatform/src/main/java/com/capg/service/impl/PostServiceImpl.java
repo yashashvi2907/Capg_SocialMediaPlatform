@@ -6,7 +6,7 @@ import com.capg.entity.Post;
 import com.capg.entity.User;
 import com.capg.exception.BadRequestException;
 import com.capg.exception.PostNotFoundException;
-import com.capg.repository.IFriendsRepo;
+import com.capg.repository.IFriendsRepository;
 import com.capg.repository.PostRepository;
 import com.capg.service.PostService;
 
@@ -27,7 +27,9 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
-    private IFriendsRepo friendsRepo;
+
+    @Autowired
+    private IFriendsRepository friendsRepo;
 
     /**
      * Constructor-based dependency injection.

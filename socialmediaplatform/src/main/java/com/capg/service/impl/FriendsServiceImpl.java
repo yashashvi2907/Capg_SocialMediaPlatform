@@ -5,7 +5,7 @@ import com.capg.entity.Friends;
 import com.capg.entity.User;
 import com.capg.exception.FriendNotFoundException;
 import com.capg.exception.NoDataFoundException;
-import com.capg.repository.IFriendsRepo;
+import com.capg.repository.IFriendsRepository;
 import com.capg.repository.UserRepository;
 import com.capg.service.FriendsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class FriendsServiceImpl implements FriendsService {
      * Repository for Friends entity
      */
     @Autowired
-    private IFriendsRepo repo;
+    private IFriendsRepository repo;
 
     /**
      * Repository for User entity

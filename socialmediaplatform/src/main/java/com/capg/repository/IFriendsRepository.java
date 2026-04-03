@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * Custom query methods are defined using Spring Data JPA method naming.
  */
-public interface IFriendsRepo extends JpaRepository<Friends, Integer> {
+public interface IFriendsRepository extends JpaRepository<Friends, Integer> {
 
     /**
      * Fetch all pending friend requests where the given user is the receiver
