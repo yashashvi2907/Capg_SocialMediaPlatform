@@ -7,11 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+/**
+ * Controller class for handling Likes related APIs.
+ */
 @RestController
 @RequestMapping("/api/likes")
 public class LikesController {
-
+    /**
+     * Fetch all likes for a given post ID.
+     *
+     * @param postId the ID of the post
+     * @return list of LikesDTO if present, otherwise 204 No Content
+     */
     @Autowired
     private LikesService likeService;
 
