@@ -5,17 +5,17 @@ import java.time.LocalDateTime;
 
 /**
  * UserAccount Entity
- * 
+ *
  * This class represents the account details of a user in the system.
  * It is mainly used for authentication and login management.
- * 
+ *
  * Table Name: user_account
- * 
+ *
  * Description:
  * - Stores login credentials and account status
  * - Maintains last login time
  * - Linked with User entity (One-to-One relationship)
- * 
+ *
  * Fields:
  * - accountId  : Unique account ID (Primary Key)
  * - username   : Username of the account
@@ -33,6 +33,7 @@ public class UserAccount {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="account_id")
     private Integer accountId;
 
     /**
@@ -49,6 +50,7 @@ public class UserAccount {
     /**
      * Last login date and time
      */
+    @Column(name="login_date")
     private LocalDateTime loginDate;
 
     /**
@@ -57,13 +59,6 @@ public class UserAccount {
     @Column(nullable = false)
     private String status;
 
-    /**
-     * One-to-One relationship with User entity
-     * Each account is linked to one user
-     */
-    @OneToOne
-    @JoinColumn(name = "userID", nullable = false, unique = true)
-    private User user;
 
     /**
      * Get Account ID
@@ -145,19 +140,4 @@ public class UserAccount {
         this.status = status;
     }
 
-    /**
-     * Get Associated User
-     * @return User entity
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * Set Associated User
-     * @param user linked user entity
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
