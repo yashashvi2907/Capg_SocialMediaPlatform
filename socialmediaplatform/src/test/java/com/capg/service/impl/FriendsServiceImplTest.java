@@ -3,6 +3,7 @@ package com.capg.service.impl;
 import com.capg.dto.FriendsDTO;
 import com.capg.entity.Friends;
 import com.capg.entity.User;
+import com.capg.exception.NoDataFoundException;
 import com.capg.repository.IFriendsRepository;
 import com.capg.repository.UserRepository;
 
@@ -14,74 +15,108 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test class for FriendsServiceImpl.
+ *
+ * <p>This class contains unit test cases for testing
+ * the functionality of fetching pending friend requests.</p>
+ *
+ * <p>It uses Mockito for mocking dependencies and JUnit 5 for testing.</p>
+ *
+ * @author Mansi
+ */
 @ExtendWith(MockitoExtension.class)
 public class FriendsServiceImplTest {
 
+    /**
+     * Mock repository for Friends entity.
+     */
     @Mock
     private IFriendsRepository repo;
 
+    /**
+     * Mock repository for User entity.
+     */
     @Mock
     private UserRepository userRepo;
 
+    /**
+     * Injects mocked dependencies into service.
+     */
     @InjectMocks
     private FriendsServiceImpl service;
 
-    private User user1;
-    private User user2;
-    private Friends friend;
+    /**
+     * Test user object used in test cases.
+     */
+    private User user;
 
+    /**
+     * Initializes test data before each test execution.
+     */
     @BeforeEach
-    void setup() {
-        user1 = new User();
-        user1.setUserID(1);
-
-        user2 = new User();
-        user2.setUserID(2);
-
-        friend = new Friends();
-        friend.setFriendshipID(100);
-        friend.setUser1(user1);
-        friend.setUser2(user2);
-        friend.setStatus("accepted");
+    void setUp() {
+        user = new User();
+        user.setUserID(1);
     }
 
-    // ==============================
-    // ✅ POSITIVE TEST CASE
-    // ==============================
-    
+    /**
+     * ✅ Positive Test Case:
+     * 
+     * <p>Tests fetching pending friend requests when data exists.</p>
+     *
+     * <p>Expected:
+     * <ul>
+     *     <li>Non-null result</li>
+     *     <li>List size = 1</li>
+     *     <li>Status = "pending"</li>
+     * </ul>
+     * </p>
+     */
     @Test
-    void testGetFriendById_Positive() {
+    void testGetPendingRequests_Positive() {
 
-        when(repo.findById(100)).thenReturn(Optional.of(friend));
+        Friends f = new Friends();
+        f.setFriendshipID(101);
+        f.setUser1(user);
+        f.setUser2(user);
+        f.setStatus("pending");
 
-        FriendsDTO result = service.getFriendById(100);
+        when(userRepo.findById(1)).thenReturn(Optional.of(user));
+        when(repo.findByUser2AndStatus(user, "pending")).thenReturn(List.of(f));
+
+        List<FriendsDTO> result = service.getPendingRequests(1);
 
         assertNotNull(result);
-        assertEquals(100, result.getFriendshipID());
-        assertEquals(1, result.getUserID1());
-        assertEquals(2, result.getUserID2());
-        assertEquals("accepted", result.getStatus());
+        assertEquals(1, result.size());
+        assertEquals("pending", result.get(0).getStatus());
     }
 
-    // ==============================
-    // ❌ NEGATIVE TEST CASE
-    // ==============================
-    
-    
+    /**
+     * ❌ Negative Test Case:
+     * 
+     * <p>Tests fetching pending requests when no data is available.</p>
+     *
+     * <p>Expected:
+     * <ul>
+     *     <li>Throws NoDataFoundException</li>
+     * </ul>
+     * </p>
+     */
     @Test
-    void testGetFriendById_Negative() {
+    void testGetPendingRequests_NoData() {
 
-        when(repo.findById(999)).thenReturn(Optional.empty());
+        when(userRepo.findById(1)).thenReturn(Optional.of(user));
+        when(repo.findByUser2AndStatus(user, "pending")).thenReturn(List.of());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            service.getFriendById(999);
+        assertThrows(NoDataFoundException.class, () -> {
+            service.getPendingRequests(1);
         });
-
-        assertEquals("Friend not found", exception.getMessage());
     }
 }

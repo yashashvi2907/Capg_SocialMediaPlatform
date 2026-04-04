@@ -100,4 +100,25 @@ public class FriendsController {
     public List<FriendsDTO> getAllAccepted() {
         return service.getAllAccepted();
     }
+    
+    /**
+     * Retrieves mutual friends between two users.
+     *
+     * <p>This API returns a list of common friends between the given users.
+     * Only friendships with status "accepted" are considered.</p>
+     *
+     * @param user1 ID of the first user
+     * @param user2 ID of the second user
+     * @return List of mutual friends as FriendsDTO
+     *
+     * @author Mansi
+     */
+    
+    @GetMapping("/mutual")
+    public List<FriendsDTO> getMutualFriends(
+            @RequestParam Integer user1,
+            @RequestParam Integer user2) {
+
+        return service.getMutualFriends(user1, user2);
+    }
 }
